@@ -1,4 +1,6 @@
-# Scenario
+# Lab #1 : Operationalizing Pytorch Model with Mlflow
+
+## Scenario
 
 PyTorch is one of the main machine learning library used for applications such as computer vision and natural language processing. 
 It is catching up with TensorFlow accelerating the path from research prototyping to production deployment.
