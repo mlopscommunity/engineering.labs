@@ -14,6 +14,9 @@ lifecycles of Pytorch assets using Mlflow.
 
 ## Proposal
 
+### Architecture
+
+![Architecture](imgs/arch.svg)
 TBD
 
 ## Repo Organization
