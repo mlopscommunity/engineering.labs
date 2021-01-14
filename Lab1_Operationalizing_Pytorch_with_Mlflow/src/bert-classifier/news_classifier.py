@@ -408,5 +408,5 @@ if __name__ == "__main__":
             requirements_file="requirements.txt",
             extra_files=["class_mapping.json", "bert_base_uncased_vocab.txt"],
         )
-    
+        mlflow.log_artifacts(args.model_save_path, "state_dict_version")
     mlflow.end_run()
