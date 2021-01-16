@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  data_loader:
+    container_name: data_loader
+    image: notox/data_loader
+    build:
+      context: data_loader
+    environment:
+      DATASET_NAME: jigsaw-unintended-bias-in-toxicity-classification
+    volumes:
+      - dataset_storage:/dataset_storage
+    command: python data_loader.py
+
+networks:
+  backend:
+
+volumes:
+  dataset_storage:
