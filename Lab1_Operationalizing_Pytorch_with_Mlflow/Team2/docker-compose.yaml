@@ -7,9 +7,13 @@ services:
     build:
       context: data_loader
     environment:
-      DATASET_NAME: jigsaw-unintended-bias-in-toxicity-classification
+      NOTOX_DATASET_NAME: jigsaw-unintended-bias-in-toxicity-classification
+      NOTOX_STORAGE_PATH: /dataset_storage
+      NOTOX_WORK_STORE: /work_store
+      NOTOX_RANDOM_SEED: 1
     volumes:
       - dataset_storage:/dataset_storage
+      - work_store:/work_store
     command: python data_loader.py
 
 networks:
@@ -17,3 +21,4 @@ networks:
 
 volumes:
   dataset_storage:
+  work_store:

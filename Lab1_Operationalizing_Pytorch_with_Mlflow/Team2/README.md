@@ -9,6 +9,8 @@ which will accept some POST request with a text (sentence, or a couple of senten
 use a model to make a prediction on the level of all of [those](https://colab.research.google.com/github/jonad/pytorch_mlflow/blob/master/textclassification_with_mlflow.ipynb#scrollTo=gkDa6Mo5d21P)
 sentence properties and send it as a JSON response.
 
+The model training was performed on `train.csv` file within the dataset (1804874 rows x 45 columns)
+
 ## Requirements
 - Docker Engine 19.03.0+
 - Docker-compose (developed on 1.27)
