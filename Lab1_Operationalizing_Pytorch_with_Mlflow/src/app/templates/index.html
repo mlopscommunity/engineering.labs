@@ -35,7 +35,9 @@
             <div class="col-sm-2">
             </div>
             <div class="col-sm=8">
-                <h1>Type of news prediction</h1>
+                <h1>News article classification</h1>
+                <p>Input a news article below to predict whether it's a "World", "Sports", "Business", or "Science" article</p>
+                <p>e.g. from <a href="https://www.bbc.com/news">BBC</a> or <a href="https://news.google.com">Google News</a></p>
 
                 <div class="card">
                     <div class="card-body">
@@ -43,7 +45,7 @@
                         <form action="{{ url_for('predict')}}" method="post">
                             <div class="form-group">
                                 <label for="textinput">Input news article</label>
-                                <textarea id="textinput" class="form-control" name="news" placeholder="News article" required="required" rows="3"></textarea>
+                                <textarea id="textinput" class="form-control" name="news" placeholder="Paste news article here" required="required" rows="3"></textarea>
                             </div>
 
                             <button type="submit" class="btn btn-primary">Predict type of news</button>
