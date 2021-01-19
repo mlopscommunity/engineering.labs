@@ -11,8 +11,8 @@ MLflow is an open source platform to manage the ML lifecycle, including experime
 or well-known APIs (Python, R, Java and REST), building a workflow capable of handling development and
 production activies.
 
-In this lab, MLOps community wants to test them and provide feasible ways to build end-to-end model 
-lifecycles of Pytorch assets using Mlflow.
+In this lab, [MLOps community](https://mlops.community/) wants to test them and provide feasible ways 
+to build end-to-end model lifecycles of Pytorch assets using Mlflow.
 
 ## Repo Organization
 
@@ -48,11 +48,74 @@ dockerized **Serving Instances**, containers running [Torchserve](https://pytorc
 web access to the models. Serving instances are hosted by **Serving Nodes**.
 
 In order to provide feedback loop, a **Monitor Node** checks the status and performance meters, issuing 
-new training cycles or a full rebuild process. Some structures traverses through Development and Production perimeters. Serving, Training and Monitor nodes are key elements that communicate between those zones.
+new training cycles or a full rebuild process. Some structures traverses through Development and Production perimeters. Serving, Training and Monitor nodes are key elements that communicate between those zones. 
+**Control or Operator Machine** is the VM used by Configuration Manager or Operation Engineer to follow up
+the process or issue commands to the nodes in the pipeline. This process may run through many different 
+perimeters, however this solution comprises _Development_ and _Production_ stages only.
 
-### Scenarios
+This table describes the involved mechanisms and architectural components of the solution:
+
+- Project packaging
+- Library Management
+- Scheduled Acitivities
+- Workflow Management
+- Remote Access
+- Large and Binary Data Storage
+- Data Storage
+- ML Lifecycle Management
+- ML Framework
+- Security Credentials
+- Computing
+
 
 TBD
+
+### Workflow
+
+[DevOps](https://en.wikipedia.org/wiki/DevOps) tools heavily relies on actions triggered by changes
+and other events regarding application's source code. MLOps goes beyond this assumption since any reasonable
+solution must deal with assets like ML Models, datasets, features, etc. Therefore, a simples ML 
+application may turn into a complex workflow in order to ensure the best model runs in Production. The
+following workflow depicts a common development scenario where a production web application uses a ML
+Model to provide business value. 
+
+![Solution Workflow](imgs/workflow.svg)
+
+The first stage is Development Workflow. It concerns the continuous integration of new ML code and Dataset 
+changes into a Development Server. Here follows the steps:
+
+1. Commited code or changes in the Dataset fires a training execution. These events trigger Github actions;
+ 
+ 1. ML pipeline starts. we are considering that previous data activities (Extraction, Validation and
+ Preparation) were already executed. In _Training Node_, a Github runner checks out the ML Component 
+ and \ or updates the training dataset. The ML Component itself describes its structure (_MLFlow project file_) 
+ and how it should be run (_Dockerfile_). The runner starts the training process using MLFlow CLI 
+ features: ```mlflow run```. The training happens in a GPU-powered Docker container configured with the 
+ _Tracking Server_ (```MLFLOW_TRACKING_URI```) . At the end of this step, there's a new trained model 
+ with its respective metadata;
+ 
+ 1. The Training Node sends the trained model, its extra files, and metadata to the Model Registry
+ and Tracking Server respectively. In fact, these assets are physically stored in an external Cloud
+ Storage Service acessible from Internet;
+ 
+ 1. The development workflow ends by deploying the trained model in a _Serving Node_. The runner creates
+ and registers a new Docker image capable running the model. The runner starts a container  
+ (```docker run```) which downloads and packs the trained model through command 
+ ```mlflow create deployment```.
+
+In our scenario, the decision to go to Production must be triggered through MLFlow Tracking Server. Here
+are the steps:
+
+5. The Operator promotes the model to Production in the Tracking Server. It triggers a new _Deploy_ event.
+The Production Flow Orchestrator _(?)_ pulls the docker image and runs it configuring the environment
+variables properly;
+
+5. The Monitor node tracks how model is performing and periodically starts a local training pipeline
+with Production data in order to avoid _Model Erosion_;
+
+5. The model realizes the model doesn't perform anymore (_Model Erosion_) or there are significant 
+changes in the data (changes in the data semantic, new relevant fields, etc). It start a feedback
+loop triggering a full model rebuild process.
 
 ## References
 TBD
