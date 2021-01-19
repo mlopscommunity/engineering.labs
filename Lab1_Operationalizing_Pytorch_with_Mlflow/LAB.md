@@ -25,6 +25,7 @@ itself is organized into subfolders according to which components it belongs to;
 * [infra](infra/): Infrastrucuture creation and definition code.
 
 ## Proposal
+### Design Overview
 
 Our team intend to orchestrate common unix management toolkits (shell commands, ssh, etc), MLFlow
 CLI and MLFlow components to build a seamless end-to-end pipeline. It should comprehend 
@@ -53,22 +54,24 @@ new training cycles or a full rebuild process. Some structures traverses through
 the process or issue commands to the nodes in the pipeline. This process may run through many different 
 perimeters, however this solution comprises _Development_ and _Production_ stages only.
 
-This table describes the involved mechanisms and architectural components of the solution:
+### Architectural Components and Decisions
 
-- Project packaging
-- Library Management
-- Scheduled Acitivities
-- Workflow Management
-- Remote Access
-- Large and Binary Data Storage
-- Data Storage
-- ML Lifecycle Management
-- ML Framework
-- Security Credentials
-- Computing
+In this section, we record the (most relevant) design decisions, components selection and the rationale around them.
 
+| # | Subject | Description | Affected Items | Solution | Rationale |
+|---|---------|-------------|----------------|----------|-----------|
+| 1 | Computing | ML needs processing power as well as GPU. Our architecure relies on distributed elements, thus needing a reasonable number of physical or virtual machines (some with GPU-power) | All Nodes and Machines | GCP Compute Service | It provides $ 300,00 of (enough) free services and we can also spin some gpu-powered machines |
+| 2 | Durable Data Storage | Every serious solution needs to store durable data | Tracking Server | SQLite | Simplest and Fastest Relational Database tha fits our needs |
+| 3 | Large and Binary Data Storage | ML projects eventually need to store models and extra large files, This type of data doesn't fit in RDBMS | Tracking Server<br>Artifact Store | Google Cloud Storage | Same as #1 |
+| 4 | Shipment and Deployment | There are many deployable assets as well as acessory tools that need specific environment and SO libraries to run. Just installing them into a machine isn't a viable option | Training and Serving Nodes<br>Artifact Storage | Docker | It's the _de facto_ pattern for shipping and deploying things |
+| 5 | Lib Management | Python has a powerful but sometimes confusing and conflicting library ecossystem. Our components may depend on conflicting libs and that will lead to problems in Production | All Nodes and Machines | Conda<br>Pip | Both are heavily used by Python community. They also work quite well with isolation provided by Docker images |
+| 6 | Remote Access | Sometimes we need to issue remote commands or operate a remote machine | All Nodes and Machines | SSH | Hey... It's SSH. There's no need to rationale :-P |
+| 7 | CI/CD & Workflow Management | We need to seamlessly integrate and deploy ML stuff. We also have to coordinate the process between nodes | All Items | Github Actions | We're using GitHub, it's heavily used by community and comes off-the-shelf |
+| 8 | Scheduler | Some activities are triggered by clock | All Nodes and Machines | CRON | We are using Unix like machines |
+| 9 | Project Metadata | We need to describe the ML Component, its structure and how it should run | Source Code Repository<br>Training and Serving Nodes | MLFlow Project Definition | Non-functional Requirement we must adhere |
+| 10 | ML Lifecycle Management | We must track the ML Process | All Nodes and Machines | MLFlow |  Non-functional Requirement we must adhere |
+| 11 | ML Framework | We are building ML Components. Therefore, we must use a ML framework to train our models | Training and Serving Nodes | Pytorch | Non-functional Requirement we must adhere |
 
-TBD
 
 ### Workflow
 
