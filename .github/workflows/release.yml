@@ -30,6 +30,25 @@ jobs:
           APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
         with:
           args: info
+      # DockerHub integration via actions
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1 
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          context: ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier
+          file: ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/Dockerfile
+          tags: englabsteam1/trainer:latest
+          build-args: |
+            GCP_CREDS_JSON_BASE64=${{ secrets.GCP_CREDS_JSON_BASE64 }}
+      # Alternative manual build (for comparison, only one branch will be left)
       - name: Build TorchServe image
         run: |
           cd Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier && \
