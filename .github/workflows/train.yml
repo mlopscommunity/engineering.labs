@@ -1,0 +1,42 @@
+name: "Run training"
+
+# Trigger the workflow on push for the master branch
+on:
+  push:
+    branches: [master]
+
+jobs:
+  train:
+    name: Train
+    runs-on: ubuntu-latest
+    env:
+      GCP_CREDS_JSON_BASE64: ${{ secrets.GCP_CREDS_JSON_BASE64 }}
+    steps:
+      - name: Checkout commit
+        uses: actions/checkout@v2
+      - name: Setup Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - name: Configure GCP access
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: $ {{ secrets.GCP_PROJECT_NAME }}
+          service_account_key: ${{ secrets.GCP_CREDS_JSON_BASE64 }}
+          export_default_credentials: true
+      - name: Alternative for GCP access
+        uses: actions-hub/gcloud@master
+        env:
+          PROJECT_ID: $ {{ secrets.GCP_PROJECT_NAME }}
+          APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+        with:
+          args: info
+      - name: Build trainer image
+        run: |
+          cd Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier && \
+          docker build -t engineering-labs1/trainer \
+          --build-arg GCP_CREDS_JSON_BASE64="${GCP_CREDS_JSON_BASE64}" \
+          -f Dockerfile-trainer .
+      - name: Deploy trainer and run training
+        run: |
+          echo TODO
