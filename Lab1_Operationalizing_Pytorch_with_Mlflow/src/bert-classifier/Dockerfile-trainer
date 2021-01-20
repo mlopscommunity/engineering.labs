@@ -1,6 +1,15 @@
 FROM python:3.7
 
+# Include GCP service account credentials with the build
+# Run docker build .... --build-arg GCP_CREDS_JSON_BASE64="xxxx"
+# where xxxx is a base64-encoded version of GCP creds JSON
+# The lab repo has a secret named GCP_CREDS_JSON_BASE64 with required data
+ARG GCP_CREDS_JSON_BASE64
+ENV GCP_CREDS_JSON_BASE64_ENV=${GCP_CREDS_JSON_BASE64}
+ENV GOOGLE_APPLICATION_CREDENTIALS=/root/gcp.json
+RUN echo "${GCP_CREDS_JSON_BASE64_ENV}"| base64 --decode > "${GOOGLE_APPLICATION_CREDENTIALS}"
+
 RUN pip install --upgrade pip && \
     pip install torch==1.7.1+cpu torchvision==0.8.2+cpu torchaudio==0.7.2 torchserve torch-model-archiver -f https://download.pytorch.org/whl/torch_stable.html && \
-    pip install --no-cache-dir numpy mlflow transformers==3.5.0 sklearn tqdm torchtext pandas cloudpickle boto3
+    pip install --no-cache-dir numpy mlflow transformers==3.5.0 sklearn tqdm torchtext pandas cloudpickle boto3 google-cloud-storage
 
