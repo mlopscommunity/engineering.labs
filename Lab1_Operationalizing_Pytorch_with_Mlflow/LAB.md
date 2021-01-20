@@ -102,16 +102,13 @@ changes into a Development Server. Here follows the steps:
  Storage Service acessible from Internet;
  
  1. The development workflow ends by deploying the trained model in a _Serving Node_. The runner creates
- and registers a new Docker image capable running the model. The runner starts a container  
- (```docker run```) which downloads and packs the trained model through command 
+ and registers a new Docker image capable of running the model. The runner starts a container  
+ (```docker run -t model:version```) which downloads and packs the trained model through command 
  ```mlflow create deployment```.
 
-In our scenario, the decision to go to Production must be triggered through MLFlow Tracking Server. Here
-are the steps:
+The decision to promote a model to Production happens after some experiments. Model version _X_ is selected. This _external event_ triggers the Production Workflow:
 
-5. The Operator promotes the model to Production in the Tracking Server. It triggers a new _Deploy_ event.
-The Production Flow Orchestrator _(?)_ pulls the docker image and runs it configuring the environment
-variables properly;
+5. Operations and Product Management Team decides to deploy a model to Production environment. A release command is issued, triggering GitHub Actions. The runner pulls and configures the corresponding Docker image according to Production environment;
 
 5. The Monitor node tracks how model is performing and periodically starts a local training pipeline
 with Production data in order to avoid _Model Erosion_;
