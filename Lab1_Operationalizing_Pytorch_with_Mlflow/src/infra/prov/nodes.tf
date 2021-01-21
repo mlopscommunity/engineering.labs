@@ -15,7 +15,7 @@ provider "google" {
 resource "google_compute_instance" "training_node" {
   name         = "training-node"
   machine_type = "c2-standard-8"
-  tags         = ["ssh", "web"]
+  tags         = ["ssh", "web", "tf-created"]
   zone         = var.gcp_zone
 
   boot_disk {
@@ -42,7 +42,7 @@ resource "google_compute_instance" "training_node" {
 resource "google_compute_instance" "tracking_node" {
   name         = "tracking-node"
   machine_type = "g1-small"
-  tags         = ["ssh", "tracking"]
+  tags         = ["ssh", "tracking", "tf-created"]
   zone         = "southamerica-east1-a"
 
   boot_disk {
@@ -69,7 +69,7 @@ resource "google_compute_instance" "tracking_node" {
 resource "google_compute_instance" "serving_node" {
   name         = "serving-node"
   machine_type = "e2-standard-2"
-  tags         = ["ssh", "serving"]
+  tags         = ["ssh", "serving", "tf-created"]
   zone         = "southamerica-east1-a"
 
   boot_disk {

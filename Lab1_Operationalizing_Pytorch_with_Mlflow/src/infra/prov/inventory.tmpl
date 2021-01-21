@@ -1,0 +1,10 @@
+[all]
+${trainer.name} ansible_host=${trainer.network_interface.0.access_config.0.nat_ip} ip=${trainer.network_interface.0.network_ip}
+${tracker.name} ansible_host=${tracker.network_interface.0.access_config.0.nat_ip} ip=${tracker.network_interface.0.network_ip}
+${server.name} ansible_host=${server.network_interface.0.access_config.0.nat_ip} ip=${server.network_interface.0.network_ip}
+
+[track]
+${tracker.name}
+
+[serve]
+${server.name}

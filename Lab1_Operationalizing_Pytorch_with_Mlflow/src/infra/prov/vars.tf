@@ -32,3 +32,17 @@ variable "ansible_ssh" {
     key_file = "ansible-key.pub"
   }
 }
+
+variable "mlflow_db_user" {
+  description = "MLFlow user to connect to DB"
+}
+
+variable "mlflow_db_pass" {
+  description = "MLFlow user pass to connect to DB"
+}
+
+variable "mlflow_db_name" {
+  description = "MLFlow DB name"
+  default     = "mlflow_db"
+}
+
