@@ -1,10 +1,23 @@
-
 # What to select
 DATASET_FILE = "train.csv"
+CHECKSUMS = {
+    "test.csv.zip": "96fa1f0bd2ce15ca5ab3bc4d28e74d876c8342fe1396b89b2cdaa0815972f60b",
+    "train.csv.zip": "0e44477b34a24008a952c2c252fe2a6cc34d737f603f62f95f9ae1666eb94c1a",
+    "glove.840B.300d.txt": "9641ef45628fd8c5c0bc555c8944f7bad7bce36ae7be3cafff0bb109fe60883e",
+    "glove.840B.300d.zip": "c06db255e65095393609f19a4cfca20bf3a71e20cc53e892aafa490347e3849f",
+    "train.csv.zip_50000_glove.840B.300d.txt_0.9_1": {
+        "x_train.pkl": "35312517b9f9f4068ee94e20c236600778180ab9827a3900bfc7dae58f2fe4b8",
+        "y_train.pkl": "96e91fbdf1456c0b83814a46c9ff4b9ca0751518789798f1fdb2013b31c90993",
+        "y_aux_train.pkl": "a4a4374f8705d785996b649b34e7ab358e5293772b577b29841a08492b23a676",
+        "x_test.pkl": "ee6027a2aaddcc1efc88ad742f1c0b69847b4cf3c2b59914e948619fda66bd4b",
+        "y_test.pkl": "0b116f3a81e20a42f26c19ca7cf39720d8b0542a48993d361e303e26962ba6a0",
+        "y_aux_test.pkl": "f2c116d67ba40aee8fbefd0627e1349c4463a0a2a2affc0847fb93d6bd008a09",
+    }
+}
 DATASET_SIZE = 50000
-COLUMNS_TO_USE = [
+X_COLUMN = 'comment_text'
+Y_COLUMNS = [
     'target',
-    'comment_text',
     'severe_toxicity',
     'obscene',
     'identity_attack',
@@ -44,7 +57,12 @@ SYMBOLS_TO_ISOLATE = """.,?!-;*"…:—()%#$&_/@＼・ω+=”“[]^–>\\°<~\xa
 ⚓年∎ℒ▪▙☏⅛ｃａｓǀ℮¸ｗ‚∼‖ℳ❄←☼⋆ʒ⊂、⅔¨͡๏⚾⚽Φ×θ￦？（℃⏩☮⚠月✊❌⭕▸■⇌☐☑⚡☄ǫ╭∩╮，例＞ʕɐ̣Δ₀✞┈╱╲▏▕┃╰▊▋╯
 ┳┊≥☒↑☝ɹ✅☛♩☞ＡＪＢ◔◡↓♀⬆̱ℏ\x91⠀ˤ╚↺⇤∏✾◦♬³の｜／∵∴√Ω¤☜▲↳▫‿⬇✧ｏｖｍ－２０８＇‰≤∕ˆ⚜☁
 """
+REMOVE_DICT = {ord(c): f'' for c in SYMBOLS_TO_DELETE}
+ISOLATE_DICT = {ord(c): f' {c} ' for c in SYMBOLS_TO_ISOLATE}
 
 # Embeddings configuration
 MAX_FEATURES = 50000
 TOKENIZER_WORDS = 50000
+TRAIN_SIZE = 0.9
+SEQUENCE_MAX_LEN = 100
+RANDOM_SEED = 1234
