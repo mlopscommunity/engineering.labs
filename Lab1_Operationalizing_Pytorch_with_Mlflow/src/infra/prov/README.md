@@ -1,12 +1,12 @@
-# Infrastructure Automation
+# Infrastructure Provisioning
 
-We are mixing [Terraform](https://www.terraform.io/) and [Ansible](https://www.ansible.com/) to build 
-our infrastructure. Here follows the steps to put everything up and running:
+Here follows the steps to put everything up and running:
 
-1. Install Terraform and Ansible
+1. Install Terraform
 
 1. Create a service account add set the following permissions:
     - Compute Admin
+    - Cloud SQL Admin
     <!-- - Storage Admin -->
 
 1. Create and download the service account key
@@ -34,3 +34,9 @@ our infrastructure. Here follows the steps to put everything up and running:
     terraform plan
     terraform apply
     ```
+
+1. Generate inventory for Configuration stage
+
+```sh
+terraform output -raw inventory > ../conf/inventory.ini
+```
