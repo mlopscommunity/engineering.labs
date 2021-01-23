@@ -6,16 +6,22 @@ Here follows the steps to put everything up and running:
 
 1. Create a service account add set the following permissions:
     - Compute Admin
+    - Compute Instance Admin (v1)
     - Cloud SQL Admin
     - Service Account Admin
+    - Service Account User
     - Artifact Registry Administrator
+    - Storage Admin
+    - Project IAM Admin
     
 1. Create and download the service account key
 
 1. Enable the following APIs: 
     - Cloud Resource Manager API
     - Identity and Access Management (IAM) API
+    - IAM Service Account Credentials API
     - Cloud SQL Admin API
+    - Cloud Storage API
     - Artifact Registry API
 
 1. Adjust terraform variables

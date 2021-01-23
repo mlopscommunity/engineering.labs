@@ -12,11 +12,17 @@ resource "google_sql_database_instance" "englab_db_instance" {
   name             = "englab-${random_id.db_suffix.hex}"
   database_version = "POSTGRES_12"
 
-  # CAREFUL: Just uncomment line below if you know what you're doing!
+  /*  CAREFUL: Just uncomment line below if you know what you're doing!
+   *  "deletion_protection" providers security for your even if you destroy
+   *  or delete your data. If set to 'true' (default), Terraform won't delete
+   *  your instance during a destroy command. You must set "delete_protecttion"
+   *  to false before trying to destroy.
+  */
   deletion_protection = false
 
   settings {
-    tier              = "db-f1-micro"
+    # Only custom or shared-core
+    tier              = "db-g1-small"
     availability_type = "ZONAL"
 
     backup_configuration {
@@ -44,4 +50,20 @@ resource "google_sql_user" "users" {
 resource "google_sql_database" "database" {
   name     = var.mlflow_db_name
   instance = google_sql_database_instance.englab_db_instance.name
+}
+
+resource "google_storage_bucket" "mlflow_data_bucket" {
+  name                        = "mlflow-data-bucket"
+  location                    = var.gcp_region
+  uniform_bucket_level_access = true
+}
+
+# Our private Docker Registry. It's backed in the Cloud Storage
+resource "google_artifact_registry_repository" "englab_repository" {
+  provider = google-beta
+
+  location      = var.gcp_region
+  repository_id = "englab-repository"
+  description   = "EngLabs private Repository"
+  format        = "DOCKER"
 }
