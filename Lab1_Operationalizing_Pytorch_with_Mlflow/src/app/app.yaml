@@ -1,0 +1,16 @@
+runtime: python39
+
+handlers:
+  # This configures Google App Engine to serve the files in the app's static
+  # directory.
+- url: /templates
+  static_dir: templates
+
+  # This handler routes all requests not caught above to your main app. It is
+  # required when static routes are defined, but can be omitted (along with
+  # the entire handlers section) when there are no static files defined.
+- url: /.*
+  script: auto
+
+env_variables:
+  SERVE_URI: "http://104.198.209.50:8080"
