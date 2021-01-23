@@ -7,14 +7,16 @@ Here follows the steps to put everything up and running:
 1. Create a service account add set the following permissions:
     - Compute Admin
     - Cloud SQL Admin
-    <!-- - Storage Admin -->
-
+    - Service Account Admin
+    - Artifact Registry Administrator
+    
 1. Create and download the service account key
 
 1. Enable the following APIs: 
     - Cloud Resource Manager API
     - Identity and Access Management (IAM) API
     - Cloud SQL Admin API
+    - Artifact Registry API
 
 1. Adjust terraform variables
 
@@ -35,8 +37,12 @@ Here follows the steps to put everything up and running:
     terraform apply
     ```
 
-1. Generate inventory for Configuration stage
-
-```sh
-terraform output -raw inventory > ../conf/inventory.ini
-```
+1. Extract important information from tfstate
+    - Ansible Inventory: 
+    ```sh
+    terraform output -raw inventory > ../conf/inventory.ini
+    ```
+    - Docker Registry URL: 
+    ```sh
+    terraform output registry_url
+    ```

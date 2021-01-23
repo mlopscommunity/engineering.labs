@@ -23,3 +23,7 @@ output "inventory" {
     tracker = google_compute_instance.tracking_node
   server = google_compute_instance.serving_node })
 }
+
+output "registry_url" {
+  value = "${google_artifact_registry_repository.englab_repository.location}-docker.pkg.dev"
+}
