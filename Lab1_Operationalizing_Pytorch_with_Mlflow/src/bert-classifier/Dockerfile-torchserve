@@ -3,32 +3,35 @@ FROM python:3.8.1-slim
 ARG GCP_CREDS_JSON_BASE64
 
 ENV MLFLOW_HOME /opt/mlflow
-ENV MLFLOW_VERSION 1.13.1
-ENV BACKEND_STORE_URI ${MLFLOW_HOME}/fileStore
-ENV ARTIFACT_STORE ${MLFLOW_HOME}/artifactStore
-ENV MLFLOW_TRACKING_URI=http://35.185.111.8:5000
 ENV MODEL_STORE=${MLFLOW_HOME}/model_store
+ENV MLFLOW_TRACKING_URI=http://35.185.111.8:5000
+
 ENV GCP_CREDS_JSON_BASE64_ENV=${GCP_CREDS_JSON_BASE64}
 ENV GOOGLE_APPLICATION_CREDENTIALS=${MLFLOW_HOME}/gcp.json
-ENV MODEL_NAME=/BertModel/3
 
+ENV MODEL_NAME=/BertModel/4
+
+COPY requirements.txt /tmp
 RUN mkdir -p ${MLFLOW_HOME}/scripts && \
-    mkdir -p ${BACKEND_STORE_URI} && \
-    mkdir -p ${ARTIFACT_STORE} && \
     mkdir -p ${MODEL_STORE} && \
     echo "${GCP_CREDS_JSON_BASE64_ENV}"| base64 --decode > "${GOOGLE_APPLICATION_CREDENTIALS}" && \
-    pip install mlflow==${MLFLOW_VERSION}
-
-RUN mkdir -p /usr/share/man/man1/ && \
-    apt-get update && apt-get install -y git default-jdk wget && \
+    mkdir -p /usr/share/man/man1/ && \
+    apt-get update && apt-get install --no-install-recommends -y git default-jdk wget && \
+    apt-get clean -y -qq && apt-get autoremove -y -qq && \
+    rm -rf /var/lib/apt/lists/* && \
     git clone https://github.com/pytorch/serve.git && \
     cd serve && python ./ts_scripts/install_dependencies.py && \
-    pip install torchserve torch-model-archiver mlflow-torchserve google-cloud-storage
+    pip install --no-cache-dir torch==1.7.1+cpu torchvision==0.8.2+cpu torchaudio==0.7.2 torchserve torch-model-archiver -f https://download.pytorch.org/whl/torch_stable.html && \
+    pip install --no-cache-dir -r /tmp/requirements.txt
 
 COPY entrypoints/torchserve.sh ${MLFLOW_HOME}/scripts/run.sh
 RUN chmod +x ${MLFLOW_HOME}/scripts/run.sh
 
-VOLUME ["${MLFLOW_HOME}/scripts/", "${ARTIFACT_STORE}"]
+# TODO: This should be taken from MLFlow
+COPY news_classifier.py ${MLFLOW_HOME}/
+COPY news_classifier_handler.py ${MLFLOW_HOME}/
+
+VOLUME ["${MLFLOW_HOME}/scripts/"]
 
 WORKDIR ${MLFLOW_HOME}
 

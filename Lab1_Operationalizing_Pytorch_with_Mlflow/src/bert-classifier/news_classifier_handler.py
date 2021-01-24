@@ -44,7 +44,7 @@ class NewsClassifierHandler(object):
 
         self.VOCAB_FILE = os.path.join(model_dir, "bert_base_uncased_vocab.txt")
         if not os.path.isfile(self.VOCAB_FILE):
-            raise RuntimeError("Missing the vocab file")
+            raise RuntimeError(f"Missing the vocab file at {self.VOCAB_FILE}")
 
         self.class_mapping_file = os.path.join(model_dir, "class_mapping.json")
 
