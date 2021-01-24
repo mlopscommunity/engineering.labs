@@ -11,7 +11,7 @@ ENV GOOGLE_APPLICATION_CREDENTIALS=${MLFLOW_HOME}/gcp.json
 
 ENV MODEL_NAME=/BertModel/4
 
-COPY requirements.txt /tmp
+COPY requirements-torchserve.txt /tmp
 RUN mkdir -p ${MLFLOW_HOME}/scripts && \
     mkdir -p ${MODEL_STORE} && \
     echo "${GCP_CREDS_JSON_BASE64_ENV}"| base64 --decode > "${GOOGLE_APPLICATION_CREDENTIALS}" && \
@@ -22,7 +22,7 @@ RUN mkdir -p ${MLFLOW_HOME}/scripts && \
     git clone https://github.com/pytorch/serve.git && \
     cd serve && python ./ts_scripts/install_dependencies.py && \
     pip install --no-cache-dir torch==1.7.1+cpu torchvision==0.8.2+cpu torchaudio==0.7.2 torchserve torch-model-archiver -f https://download.pytorch.org/whl/torch_stable.html && \
-    pip install --no-cache-dir -r /tmp/requirements.txt
+    pip install --no-cache-dir -r /tmp/requirements-torchserve.txt
 
 COPY entrypoints/torchserve.sh ${MLFLOW_HOME}/scripts/run.sh
 RUN chmod +x ${MLFLOW_HOME}/scripts/run.sh
