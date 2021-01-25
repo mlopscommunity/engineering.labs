@@ -39,6 +39,7 @@ resource "google_compute_instance" "tracking_node" {
   machine_type = "g1-small"
   tags         = ["ssh", "tracking", "tf-created"]
   zone         = "southamerica-east1-a"
+  allow_stopping_for_update = true
 
   boot_disk {
     initialize_params {
@@ -58,6 +59,14 @@ resource "google_compute_instance" "tracking_node" {
 
   metadata = {
     "ssh-keys" = "${var.ansible_ssh.user}:${file(var.ansible_ssh.key_file)}"
+  }
+
+    /* So now we can seamless use registry and storage APIs from this instance
+   * Check iam.tf to loock for its definition
+   */
+  service_account {
+    email  = google_service_account.mlflow_data_account.email
+    scopes = ["cloud-platform"]
   }
 }
 

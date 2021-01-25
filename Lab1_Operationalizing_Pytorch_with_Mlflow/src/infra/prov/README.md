@@ -24,11 +24,23 @@ Here follows the steps to put everything up and running:
     - Cloud Storage API
     - Artifact Registry API
 
-1. Adjust terraform variables
+1. Adjust terraform variables. You may pass them by command line or create a `.tfvars` definition file. All vars are declared in [vars](vars.tf) file. Terraform will load `terraform.tfvars` automatically and set the variables. Here's a sample:
 
-    `terraform.tfvars`  file will be automatically loaded with the configured variables. 
+    ```
+    gcp_region = "southamerica-east1"
+    gcp_zone   = "southamerica-east1-a"
 
-1. Export GOOGLE_APPLICATION_CREDENTIALS env variable with the path to service account key
+    ansible_ssh = {
+    user     = "ansible"
+    key_file = "/path/to/ssh_pub_key/ansible-key.pub"
+    }
+
+    mlflow_db_user = "mlflow_server_db_user"
+    mlflow_db_pass = "mlflow_server_db_pass"
+    ```
+
+1. This example uses a GCP Service Account credential to perform operations in the Cloud. Export GOOGLE_APPLICATION_CREDENTIALS env variable with the path to service account key 
+(More on this [here](https://registry.terraform.io/providers/hashicorp/google/latest/docs/guides/getting_started)).
 
     `export GOOGLE_APPLICATION_CREDENTIALS=/PATH_TO/SERVICE_ACCOUNT_KEY/file.json`
 
@@ -48,7 +60,12 @@ Here follows the steps to put everything up and running:
     ```sh
     terraform output -raw inventory > ../conf/inventory.ini
     ```
-    - Docker Registry URL: 
+    - MLFlow Server URL Connection:
+    ```sh
+    terraform output sql_url_conn
+    ```
+    - Docker Registry URL:
     ```sh
     terraform output registry_url
     ```
+    
