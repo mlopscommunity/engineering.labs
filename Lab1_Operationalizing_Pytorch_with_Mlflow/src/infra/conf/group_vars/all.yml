@@ -1,0 +1,9 @@
+---
+# BackEnd SQL Connection URI
+backend_uri:
+
+# Google Storage URI
+artifact_uri:
+
+# MLFlow Server IP
+tracking_server:
