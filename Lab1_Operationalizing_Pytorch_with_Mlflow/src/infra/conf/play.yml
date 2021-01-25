@@ -73,6 +73,11 @@
         state: present
         create: yes
         line: 'MLFLOW_TRACKING_URI=http://{{ tracking_server }}:5000'
+    
+  post_tasks:
+    - name: Configure Docker Registry Authentication
+      ansible.builtin.command:
+        command: su -c "gcloud auth configure-docker {{ artifact_registry|quote }}" -l mlflow
   
   roles:
     - geerlingguy.pip

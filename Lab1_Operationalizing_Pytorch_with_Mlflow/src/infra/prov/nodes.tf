@@ -17,7 +17,7 @@ resource "google_compute_instance" "training_node" {
     subnetwork = google_compute_subnetwork.englab_subnet.name
 
     access_config {
-      // Ephemeral IP
+      nat_ip = google_compute_address.static_ip["training"].address
     }
   }
 
@@ -35,10 +35,10 @@ resource "google_compute_instance" "training_node" {
 }
 
 resource "google_compute_instance" "tracking_node" {
-  name         = "tracking-node"
-  machine_type = "g1-small"
-  tags         = ["ssh", "tracking", "tf-created"]
-  zone         = "southamerica-east1-a"
+  name                      = "tracking-node"
+  machine_type              = "g1-small"
+  tags                      = ["ssh", "tracking", "tf-created"]
+  zone                      = "southamerica-east1-a"
   allow_stopping_for_update = true
 
   boot_disk {
@@ -53,7 +53,8 @@ resource "google_compute_instance" "tracking_node" {
     subnetwork = google_compute_subnetwork.englab_subnet.name
 
     access_config {
-      // Ephemeral IP
+      # Need a static IP to configure in DB instance
+      nat_ip = google_compute_address.static_ip["tracking"].address
     }
   }
 
@@ -61,7 +62,7 @@ resource "google_compute_instance" "tracking_node" {
     "ssh-keys" = "${var.ansible_ssh.user}:${file(var.ansible_ssh.key_file)}"
   }
 
-    /* So now we can seamless use registry and storage APIs from this instance
+  /* So now we can seamless use registry and storage APIs from this instance
    * Check iam.tf to loock for its definition
    */
   service_account {
@@ -89,7 +90,7 @@ resource "google_compute_instance" "serving_node" {
     subnetwork = google_compute_subnetwork.englab_subnet.name
 
     access_config {
-      // Ephemeral IP
+      nat_ip = google_compute_address.static_ip["serving"].address
     }
   }
 
