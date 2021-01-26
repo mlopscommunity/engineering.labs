@@ -2,6 +2,7 @@
 # pylint: disable=W0613
 # pylint: disable=E1102
 # pylint: disable=W0223
+import json
 import shutil
 from collections import defaultdict
 import numpy as np
@@ -25,6 +26,7 @@ from torchtext.utils import download_from_url, extract_archive
 from torchtext.datasets.text_classification import URLS
 import mlflow
 import mlflow.pytorch
+from mlflow.tracking import MlflowClient
 
 class_names = ["World", "Sports", "Business", "Sci/Tech"]
 
@@ -337,6 +339,11 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="PyTorch BERT Example")
 
+    def none_or_str(value):
+        if value == 'None':
+            return None
+        return value
+
     parser.add_argument(
         "--max_epochs",
         type=int,
@@ -371,8 +378,24 @@ if __name__ == "__main__":
         "--model_save_path", type=str, default="models", help="Path to save mlflow model"
     )
 
+    parser.add_argument(
+        "--json_dump",
+        type=none_or_str,
+        default=None,
+        help="Filename to output model details (e.g. version) to",
+    )
+
+    parser.add_argument(
+        "--model_name",
+        type=none_or_str,
+        default=None,
+        help="Model name to register as (should only really be used by GH Actions)",
+    )
+
     args = parser.parse_args()
     mlflow.start_run()
+    run_id = mlflow.active_run().info.run_id
+    print(f"run id: {run_id}")
 
     model = NewsClassifier(args)
     model = model.to(model.device)
@@ -395,7 +418,18 @@ if __name__ == "__main__":
     mlflow.log_param("samples", model.NUM_SAMPLES_COUNT)
     mlflow.log_metric("test_acc", float(test_acc))
     mlflow.log_metric("test_loss", float(test_loss))
-    mlflow.pytorch.log_model(model, "bert-model", registered_model_name="BertModel", extra_files=["class_mapping.json", "bert_base_uncased_vocab.txt"])
+    mlflow.pytorch.log_model(model, "bert-model", registered_model_name=args.model_name, extra_files=["class_mapping.json", "bert_base_uncased_vocab.txt"])
+
+    if args.json_dump is not None:
+        from mlflow.entities.model_registry import ModelVersion
+
+        client = MlflowClient()
+        filter_string = f"run_id='{run_id}"
+        registered_model: ModelVersion = client.search_model_versions(filter_string=filter_string)[0]
+        model_details = {k.strip("_"): v for k, v in registered_model.__dict__.items()}
+        j = json.dumps(model_details)
+        with open(args.json_dumps) as f:
+            f.writelines(j)
 
     print("\n\n\n SAVING MODEL")
 
