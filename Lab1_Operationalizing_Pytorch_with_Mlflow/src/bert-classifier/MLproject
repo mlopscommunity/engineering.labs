@@ -2,7 +2,7 @@ name: bert-classification
 
 docker_env:
   image:  mlflow-trainer
-  volumes: [".:/opt/englab/"]
+  volumes: ["$(pwd):/opt/englab/"]
 
 entry_points:
   main:

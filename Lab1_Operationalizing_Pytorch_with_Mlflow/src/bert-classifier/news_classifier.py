@@ -424,11 +424,11 @@ if __name__ == "__main__":
         from mlflow.entities.model_registry import ModelVersion
 
         client = MlflowClient()
-        filter_string = f"run_id='{run_id}"
+        filter_string = f"run_id='{run_id}'"
         registered_model: ModelVersion = client.search_model_versions(filter_string=filter_string)[0]
         model_details = {k.strip("_"): v for k, v in registered_model.__dict__.items()}
         j = json.dumps(model_details)
-        with open(args.json_dumps) as f:
+        with open(args.json_dump, 'w+') as f:
             f.writelines(j)
 
     print("\n\n\n SAVING MODEL")
