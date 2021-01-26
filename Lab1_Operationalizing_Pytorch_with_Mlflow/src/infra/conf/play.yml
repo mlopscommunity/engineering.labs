@@ -76,8 +76,7 @@
     
   post_tasks:
     - name: Configure Docker Registry Authentication
-      ansible.builtin.command:
-        command: su -c "gcloud auth configure-docker {{ artifact_registry|quote }}" -l mlflow
+      command: su -c "gcloud auth configure-docker {{ artifact_registry|quote }} --quiet" -l mlflow
   
   roles:
     - geerlingguy.pip
