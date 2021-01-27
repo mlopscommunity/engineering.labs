@@ -1,14 +1,14 @@
 name: bert-classification
 
 docker_env:
-  image:  labs1-mlflow-train
+  image: englabs/trainer
   environment: [["MLFLOW_TRACKING_URI", "http://35.185.111.8:5000"]]
 
 entry_points:
   main:
     parameters:
       max_epochs: {type: int, default: 1}
-      num_samples: {type: int, default: 15000}
+      num_samples: {type: int, default: 64}
       save_model: {type: bool, default: False}
       vocab_file: {type: str, default: 'https://s3.amazonaws.com/models.huggingface.co/bert/bert-base-uncased-vocab.txt'}
       model_save_path: {type: str, default: 'models'}
