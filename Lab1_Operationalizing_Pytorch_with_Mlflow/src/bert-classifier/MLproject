@@ -1,7 +1,8 @@
 name: bert-classification
 
 docker_env:
-  image:  mlflow-trainer  
+  image:  labs1-mlflow-train
+  environment: [["MLFLOW_TRACKING_URI", "http://35.185.111.8:5000"]]
 
 entry_points:
   main:

@@ -10,3 +10,5 @@ torchtext
 torch
 torchvision
 pandas
+sklearn
+tqdm

@@ -9,7 +9,8 @@ ENV GCP_CREDS_JSON_BASE64_ENV=${GCP_CREDS_JSON_BASE64}
 ENV GOOGLE_APPLICATION_CREDENTIALS=/root/gcp.json
 RUN echo "${GCP_CREDS_JSON_BASE64_ENV}"| base64 --decode > "${GOOGLE_APPLICATION_CREDENTIALS}"
 
+COPY requirements-torchserve.txt requirements.txt /tmp/
 RUN pip install --upgrade pip && \
-    pip install torch==1.7.1+cpu torchvision==0.8.2+cpu torchaudio==0.7.2 torchserve torch-model-archiver -f https://download.pytorch.org/whl/torch_stable.html && \
-    pip install --no-cache-dir numpy mlflow transformers==3.5.0 sklearn tqdm torchtext pandas cloudpickle boto3 google-cloud-storage
-
+    pip install --no-cache-dir torch==1.7.1+cpu torchvision==0.8.2+cpu torchaudio==0.7.2 torchserve torch-model-archiver -f https://download.pytorch.org/whl/torch_stable.html && \
+    pip install --no-cache-dir -r /tmp/requirements.txt \
+    pip install --no-cache-dir -r /tmp/requirements-torchserve.txt

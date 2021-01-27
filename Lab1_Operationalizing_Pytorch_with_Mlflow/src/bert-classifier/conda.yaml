@@ -11,6 +11,6 @@ dependencies:
   - scikit-learn
   - cloudpickle==1.6.0
   - boto3
-  - transformers
+  - transformers==3.5.0
   - torchtext==0.7.0
   - pandas
