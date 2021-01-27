@@ -418,18 +418,19 @@ if __name__ == "__main__":
     mlflow.log_param("samples", model.NUM_SAMPLES_COUNT)
     mlflow.log_metric("test_acc", float(test_acc))
     mlflow.log_metric("test_loss", float(test_loss))
-    mlflow.pytorch.log_model(model, "bert-model", registered_model_name=args.model_name, extra_files=["class_mapping.json", "bert_base_uncased_vocab.txt"])
+    mlflow.pytorch.log_model(model, "bert-model", extra_files=["class_mapping.json", "bert_base_uncased_vocab.txt"])
 
-    if args.json_dump is not None:
-        from mlflow.entities.model_registry import ModelVersion
-
+    if args.model_name is not None:
         client = MlflowClient()
-        filter_string = f"run_id='{run_id}'"
-        registered_model: ModelVersion = client.search_model_versions(filter_string=filter_string)[0]
-        model_details = {k.strip("_"): v for k, v in registered_model.__dict__.items()}
-        j = json.dumps(model_details)
-        with open(args.json_dump, 'w+') as f:
-            f.writelines(j)
+        model_uri = f"runs:/{run_id}/artifacts/bert-model"
+        print(f"REGISTERING MODEL : {model_uri}")
+        model_version = mlflow.register_model(model_uri, args.model_name)
+        if args.json_dump:
+            model_details = {k.strip("_"): v for k, v in model_version.__dict__.items()}
+            j = json.dumps(model_details)
+            print(f"SAVING MODEL DETAILS TO FILE {args.json_dump}:\n{j}")
+            with open(args.json_dump, 'w+') as f:
+                f.writelines(j)
 
     print("\n\n\n SAVING MODEL")
 
