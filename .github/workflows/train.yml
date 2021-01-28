@@ -46,7 +46,7 @@ jobs:
         with:
           push: true
           context: ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier
-          file: ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/Dockerfile
+          file: ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/Dockerfile-trainer
           tags: englabsteam1/trainer:latest
           build-args: |
             GCP_CREDS_JSON_BASE64=${{ secrets.GCP_CREDS_JSON_BASE64 }}
