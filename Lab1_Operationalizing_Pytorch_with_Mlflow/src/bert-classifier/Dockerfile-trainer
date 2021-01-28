@@ -9,6 +9,6 @@ ENV GCP_CREDS_JSON_BASE64_ENV=${GCP_CREDS_JSON_BASE64}
 ENV GOOGLE_APPLICATION_CREDENTIALS=/root/gcp.json
 RUN echo "${GCP_CREDS_JSON_BASE64_ENV}"| base64 --decode > "${GOOGLE_APPLICATION_CREDENTIALS}"
 
-COPY requirements-torchserve.txt requirements.txt /tmp/
+COPY requirements.txt /tmp/
 RUN pip install --upgrade pip && \
-    pip install --no-cache-dir -r /tmp/requirements.txt -r /tmp/requirements-torchserve.txt
+    pip install --no-cache-dir -r /tmp/requirements.txt

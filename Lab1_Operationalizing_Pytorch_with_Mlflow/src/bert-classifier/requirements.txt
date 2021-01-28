@@ -17,24 +17,3 @@ tqdm
 # extras
 google-cloud-storage
 mlflow-torchserve
-
-#!  - mlflow
-#!  - scikit-learn
-#<  - cloudpickle==1.6.0
-#<  - boto3
-#!  - transformers
-#!  - torchtext
-#!  - torch
-#<  - torchvision
-#!  - pandas
-#
-#!torch>=1.6.0
-#!mlflow>=1.12.0
-#>torchserve
-#>torch-model-archiver
-#>numpy
-#!transformers
-#!sklearn
-#>tqdm
-#!torchtext
-#!pandas
