@@ -4,6 +4,7 @@ name: "Run training"
 on:
   push:
     branches: [master]
+  pull_request:
 
 jobs:
   train:
