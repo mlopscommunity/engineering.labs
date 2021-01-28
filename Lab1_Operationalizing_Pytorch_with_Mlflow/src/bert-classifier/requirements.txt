@@ -1,4 +1,11 @@
-mlflow
+torch==1.7.1+cpu
+mlflow>=1.12.0
+torchserve
+torch-model-archiver
+numpy
+torchserve
+torch-model-archiver
+numpy
 scikit-learn
 cloudpickle==1.6.0
 boto3
@@ -7,3 +14,5 @@ torchtext
 torch
 torchvision
 pandas
+sklearn
+tqdm
