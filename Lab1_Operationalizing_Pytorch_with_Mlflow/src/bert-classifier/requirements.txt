@@ -1,4 +1,4 @@
-torch==1.7.1+cpu
+torch
 mlflow>=1.12.0
 torchserve
 torch-model-archiver
