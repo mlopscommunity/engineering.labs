@@ -28,7 +28,7 @@ jobs:
       - name: Configure GCP access
         uses: actions-hub/gcloud@master
         env:
-          PROJECT_ID: $ {{ secrets.GCP_PROJECT_NAME }}
+          PROJECT_ID: engineeringlab
           APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
         with:
           args: info
