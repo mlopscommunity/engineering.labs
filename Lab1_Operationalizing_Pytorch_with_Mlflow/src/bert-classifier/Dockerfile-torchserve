@@ -9,7 +9,7 @@ ENV MLFLOW_TRACKING_URI=http://35.185.111.8:5000
 ENV GCP_CREDS_JSON_BASE64_ENV=${GCP_CREDS_JSON_BASE64}
 ENV GOOGLE_APPLICATION_CREDENTIALS=${MLFLOW_HOME}/gcp.json
 
-ENV MODEL_NAME=/BertModel/4
+ENV MODEL_NAME=/BertModel/7
 
 COPY requirements-torchserve.txt requirements.txt /tmp/
 RUN mkdir -p ${MLFLOW_HOME}/scripts && \
