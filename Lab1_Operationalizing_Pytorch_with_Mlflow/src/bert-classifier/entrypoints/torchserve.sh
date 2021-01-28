@@ -9,3 +9,5 @@ mlflow deployments create \
         -C "MODEL_FILE=news_classifier.py" \
         -C "HANDLER=news_classifier_handler.py"\
         -C "EXPORT_PATH=/opt/mlflow/model_store"
+
+sleep infinity
