@@ -1,7 +1,7 @@
 resource "google_compute_instance" "training_node" {
   name                      = "training-node"
   machine_type              = "c2-standard-8"
-  tags                      = ["ssh", "web", "tf-created"]
+  tags                      = ["ssh", "training", "tf-created"]
   zone                      = var.gcp_zone
   allow_stopping_for_update = true
 
