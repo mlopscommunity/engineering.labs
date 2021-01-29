@@ -44,7 +44,7 @@ resource "google_compute_instance" "tracking_node" {
   boot_disk {
     initialize_params {
       image = "ubuntu-2004-focal-v20210105"
-      size  = 100
+      size  = 15
       type  = "pd-ssd"
     }
   }
