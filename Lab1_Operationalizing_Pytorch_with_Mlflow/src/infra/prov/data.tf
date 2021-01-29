@@ -52,11 +52,6 @@ resource "google_sql_database" "database" {
   instance = google_sql_database_instance.englab_db_instance.name
 }
 
-# resource "google_storage_bucket" "mlflow_data_bucket" {
-#   name                        = "mlflow-data-bucket"
-#   location                    = var.gcp_region
-#   uniform_bucket_level_access = true
-# }
 
 # Our private Docker Registry. It's backed in the Cloud Storage
 resource "google_artifact_registry_repository" "englab_repository" {
