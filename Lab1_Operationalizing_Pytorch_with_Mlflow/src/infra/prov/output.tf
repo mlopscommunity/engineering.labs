@@ -34,11 +34,6 @@ output "registry_url" {
   value       = "${google_artifact_registry_repository.englab_repository.location}-docker.pkg.dev"
 }
 
-# output "storage_url" {
-#   description = "MLFLow Data Storage URL"
-#   value = google_storage_bucket.mlflow_data_bucket.url
-# }
-
 output "inventory" {
   description = "Inventory file for Ansible"
   sensitive   = true
