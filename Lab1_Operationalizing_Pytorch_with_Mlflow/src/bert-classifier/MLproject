@@ -2,7 +2,7 @@ name: bert-classification
 
 docker_env:
   image: englabs/trainer
-  volumes: ["$(pwd):/opt/englab/"]
+  volumes: ["$(pwd):/tmp/englab/"]
 
 entry_points:
   main:

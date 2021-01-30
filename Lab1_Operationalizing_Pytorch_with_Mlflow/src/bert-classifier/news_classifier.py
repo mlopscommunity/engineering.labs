@@ -422,7 +422,7 @@ if __name__ == "__main__":
 
     if args.model_name is not None:
         client = MlflowClient()
-        model_uri = f"runs:/{run_id}/artifacts/bert-model"
+        model_uri = f"runs:/{run_id}/bert-model"
         print(f"REGISTERING MODEL : {model_uri}")
         model_version = mlflow.register_model(model_uri, args.model_name)
         if args.json_dump:
