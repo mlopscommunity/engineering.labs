@@ -8,11 +8,6 @@ output "tracking_node" {
   value       = google_compute_instance.tracking_node.network_interface.0.access_config.0.nat_ip
 }
 
-output "serving_node" {
-  description = "Serving Node public IP"
-  value       = google_compute_instance.serving_node.network_interface.0.access_config.0.nat_ip
-}
-
 output "sql_url_conn" {
   description = "Possible URL conection for this resource"
   sensitive   = true
@@ -29,15 +24,9 @@ output "sql_public_ip" {
   value       = google_sql_database_instance.englab_db_instance.public_ip_address
 }
 
-output "registry_url" {
-  description = "Private Docker Registry URI"
-  value       = "${google_artifact_registry_repository.englab_repository.location}-docker.pkg.dev"
-}
-
 output "inventory" {
   description = "Inventory file for Ansible"
   sensitive   = true
   value = templatefile("inventory.tmpl", { trainer = google_compute_instance.training_node,
-    tracker = google_compute_instance.tracking_node
-  server = google_compute_instance.serving_node })
+  tracker = google_compute_instance.tracking_node })
 }
