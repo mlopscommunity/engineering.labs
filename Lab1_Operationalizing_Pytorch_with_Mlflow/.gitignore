@@ -14,3 +14,6 @@ crash.log
 # to change depending on the environment.
 #
 *.tfvars
+
+# Ansible Inventory files
+**/inventory.ini

@@ -18,7 +18,7 @@ resource "google_sql_database_instance" "englab_db_instance" {
    *  your instance during a destroy command. You must set "delete_protecttion"
    *  to false before trying to destroy.
   */
-  deletion_protection = false
+  # deletion_protection = false
 
   settings {
     # Only custom or shared-core
@@ -50,15 +50,4 @@ resource "google_sql_user" "users" {
 resource "google_sql_database" "database" {
   name     = var.mlflow_db_name
   instance = google_sql_database_instance.englab_db_instance.name
-}
-
-
-# Our private Docker Registry. It's backed in the Cloud Storage
-resource "google_artifact_registry_repository" "englab_repository" {
-  provider = google-beta
-
-  location      = var.gcp_region
-  repository_id = "englab-repository"
-  description   = "EngLabs private Repository"
-  format        = "DOCKER"
 }
