@@ -75,7 +75,12 @@
         state: present
         create: yes
         line: 'export MLFLOW_TRACKING_URI=http://{{ tracking_server }}:5000'
-    
+      # JQ is used to process data returned from training process
+    - name: Install JSON Parser
+      apt:
+        name: jq
+        state: present
+   
   post_tasks:
     - name: Configure Docker Registry Authentication
       command: su -c "gcloud auth configure-docker {{ artifact_registry|quote }} --quiet" -l mlflow
