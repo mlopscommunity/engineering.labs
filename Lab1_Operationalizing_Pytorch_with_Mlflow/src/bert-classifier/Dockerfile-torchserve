@@ -42,7 +42,7 @@ EXPOSE 8081
 EXPOSE 8082
 
 ARG MODEL_NAME
-RUN torchserve --start --model-store ${MODEL_STORE} && \
+RUN torchserve --start --ts-config ${MLFLOW_HOME}/config.properties && \
     mlflow deployments create \
         -t torchserve \
         -m models:${MODEL_NAME} \
