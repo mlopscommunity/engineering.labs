@@ -17,3 +17,6 @@ crash.log
 
 # Ansible Inventory files
 **/inventory.ini
+
+# Ansible variables
+**/group_vars/*
