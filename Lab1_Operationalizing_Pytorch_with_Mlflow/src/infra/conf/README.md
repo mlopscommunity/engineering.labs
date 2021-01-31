@@ -9,8 +9,30 @@ steps:
     ansible-galaxy install -r requirements.yml`
     ```
 
-1. Fulfill inventory and required variables. You can check them [here](group_vars/all.yml). You can gather the
-information from Terraform outputs. Check README in [prov](../prov)
+1. Fulfill inventory and required variables.
+
+    First create the file:
+    ```sh
+    mkdir group_vars
+    touch group_vars/all.yml
+    ```
+    
+    After that, gather information from Terraform outputs. Check README in [prov](../prov).
+    Here is a sample:
+    ```yaml
+    ---
+    # BackEnd SQL Connection URI
+    backend_uri: "postgresql://<db_user>:<db_pass>@<ip>:5432/<database>"
+    
+    # Google Storage URI
+    artifact_uri: <bucket_uri>
+    
+    # MLFlow Server IP
+    tracking_server: <ip>
+    
+    # Artifact Registry that should be used to pull \ push Docker images
+    artifact_registry: <gcp_registry>
+    ```
 
 1. Run Ansible playbook
     

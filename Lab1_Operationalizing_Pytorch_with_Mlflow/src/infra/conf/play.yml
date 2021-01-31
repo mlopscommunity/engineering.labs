@@ -68,11 +68,13 @@
   tasks:
     - name: Set MLFlow Env Variable
       ansible.builtin.lineinfile:
-        path: /etc/profile.d/mlflow_vars.sh
+        path: /home/mlflow/.profile
+        owner: mlflow
+        backup: yes
         regexp: '^export MFLOW_TRACKING_URI='
         state: present
         create: yes
-        line: 'MLFLOW_TRACKING_URI=http://{{ tracking_server }}:5000'
+        line: 'export MLFLOW_TRACKING_URI=http://{{ tracking_server }}:5000'
     
   post_tasks:
     - name: Configure Docker Registry Authentication
