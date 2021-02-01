@@ -33,16 +33,16 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          context: ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier
-          file: ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/Dockerfile-trainer
-          tags: englabsteam1/trainer:latest
-          build-args: |
-            GCP_CREDS_JSON_BASE64=${{ secrets.GCP_CREDS_JSON_BASE64 }}
+      # - name: Build and push
+      #   id: docker_build
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     push: true
+      #     context: ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier
+      #     file: ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/Dockerfile-trainer
+      #     tags: englabsteam1/trainer:latest
+      #     build-args: |
+      #       GCP_CREDS_JSON_BASE64=${{ secrets.GCP_CREDS_JSON_BASE64 }}
       - name: Deploy trainer
         uses: actions-hub/gcloud@master
         env:
