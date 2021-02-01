@@ -4,8 +4,8 @@ channels:
 - pytorch
 dependencies:
 - python=3.8.2
-- pytorch==1.7.1+cpu
 - pip
+- pytorch-cpu=1.7.1
 - pip:
   - mlflow
   - scikit-learn
@@ -14,3 +14,4 @@ dependencies:
   - transformers==4.0.0
   - torchtext==0.7.0
   - pandas
+  - google-cloud-storage

@@ -48,7 +48,8 @@ jobs:
         env:
           PROJECT_ID: engineeringlab
           APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+          MLFLOW_TRACKING_URI: http://35.185.111.8:5000
         with:
           args: |
             compute ssh --zone us-east1-b compute-1 -- \
-            'hostname && pwd && ls -l && rm -rf engineering.labs && git clone https://github.com/mlops-labs-team1/engineering.labs.git && pwd && ls -lR && cd engineering.labs/Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/ && GOOGLE_APPLICATION_CREDENTIALS=~/engineeringlab.json MLFLOW_TRACKING_URI=http://35.185.111.8:500 mlflow run . -P max_epochs=1'
+            'rm -rf engineering.labs && git clone https://github.com/mlops-labs-team1/engineering.labs.git && cd engineering.labs/Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/ && conda activate mlflowbert && GOOGLE_APPLICATION_CREDENTIALS=~/engineeringlab.json MLFLOW_TRACKING_URI=${MLFLOW_TRACKING_URI} mlflow run . -P max_epochs=1'
