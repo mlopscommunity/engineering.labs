@@ -52,4 +52,4 @@ jobs:
         with:
           args: |
             compute ssh --zone us-east1-b compute-1 -- \
-            'rm -rf engineering.labs && git clone https://github.com/mlops-labs-team1/engineering.labs.git && cd engineering.labs/Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/ && conda activate mlflowbert && sed -e "s/##IMAGE##/' ${GITHUB_SHA} '/" MLFLOW_TRACKING_URI=${MLFLOW_TRACKING_URI} mlflow run --no-conda . && cd /root && rm -rf engineering.labs'
+            "rm -rf engineering.labs && git clone https://github.com/mlops-labs-team1/engineering.labs.git && cd engineering.labs/Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/ && conda activate mlflowbert && sed -i -e s/##IMAGE##/${GITHUB_SHA}/ && MLFLOW_TRACKING_URI=${MLFLOW_TRACKING_URI} mlflow run --no-conda . && cd /root && rm -rf engineering.labs"
