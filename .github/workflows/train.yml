@@ -51,4 +51,4 @@ jobs:
         with:
           args: |
             compute ssh --zone us-east1-b compute-1 -- \
-            "cd ~ && git clone https://github.com/mlops-labs-team1/engineering.labs.git && pwd && ls -lR && cd engineering.labs/Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/ && GOOGLE_APPLICATION_CREDENTIALS=~/engineeringlab.json MLFLOW_TRACKING_URI=http://35.185.111.8:500 mlflow run . -P max_epochs=1"
+            'cd ~ && git clone https://github.com/mlops-labs-team1/engineering.labs.git && pwd && ls -lR && cd engineering.labs/Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/ && GOOGLE_APPLICATION_CREDENTIALS=~/engineeringlab.json MLFLOW_TRACKING_URI=http://35.185.111.8:500 mlflow run . -P max_epochs=1'
