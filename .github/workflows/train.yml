@@ -33,17 +33,17 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      # - name: Build and push
-      #   id: docker_build
-      #   uses: docker/build-push-action@v2
-      #   with:
-      #     push: true
-      #     context: ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier
-      #     file: ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/Dockerfile-trainer
-      #     tags: englabsteam1/trainer:latest
-      #     build-args: |
-      #       GCP_CREDS_JSON_BASE64=${{ secrets.GCP_CREDS_JSON_BASE64 }}
-      - name: Deploy trainer
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          context: ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier
+          file: ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/Dockerfile-trainer
+          tags: englabsteam1/trainer:latest
+          build-args: |
+            GCP_CREDS_JSON_BASE64=${{ secrets.GCP_CREDS_JSON_BASE64 }}
+      - name: Run proper training
         uses: actions-hub/gcloud@master
         env:
           PROJECT_ID: engineeringlab
@@ -52,4 +52,4 @@ jobs:
         with:
           args: |
             compute ssh --zone us-east1-b compute-1 -- \
-            'rm -rf engineering.labs && git clone https://github.com/mlops-labs-team1/engineering.labs.git && cd engineering.labs/Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/ && conda activate mlflowbert && GOOGLE_APPLICATION_CREDENTIALS=~/engineeringlab.json MLFLOW_TRACKING_URI=${MLFLOW_TRACKING_URI} mlflow run . -P max_epochs=1'
+            'rm -rf engineering.labs && git clone https://github.com/mlops-labs-team1/engineering.labs.git && cd engineering.labs/Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/ && conda activate mlflowbert && MLFLOW_TRACKING_URI=${MLFLOW_TRACKING_URI} mlflow run . && cd /root && rm -rf engineering.labs'
