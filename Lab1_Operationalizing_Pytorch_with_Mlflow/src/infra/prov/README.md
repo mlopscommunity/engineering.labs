@@ -23,6 +23,7 @@ documentation.
     - Cloud SQL Admin API
     - Cloud Storage API
     - Artifact Registry API
+    - Cloud Run API
 
 1. [Control Machine] Generate SSH Keys. These keys should be added to the nodes. They will be used during Configuration phase.
     ```sh

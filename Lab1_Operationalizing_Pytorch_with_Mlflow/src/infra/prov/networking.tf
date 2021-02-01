@@ -68,24 +68,12 @@ resource "google_compute_firewall" "tracking_node" {
   target_tags = ["tracking"]
 }
 
-resource "google_compute_firewall" "serving_node" {
-  name    = "englab-serving-node"
-  network = google_compute_network.englab_vpc.name
-
-  allow {
-    protocol = "tcp"
-    ports    = ["8080-8082", "7070-7071"]
-  }
-
-  target_tags = ["serving"]
-}
-
 /*
  * We need a static IP allocation for Tracking Node so we can build a link between it and DB instance.
  * Doing that for all nodes so we will need to generate Ansible inventory only once and after resources
  * creation.
  */
 resource "google_compute_address" "static_ip" {
-  for_each = toset(["training", "tracking", "serving"])
+  for_each = toset(["training", "tracking"])
   name     = "${each.key}-static-ip"
 }
