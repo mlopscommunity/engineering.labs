@@ -60,6 +60,7 @@ jobs:
           tags: gcr.io/engineeringlab/torchserve:${{ steps.tagName.outputs.tag }}
           build-args: |
             GCP_CREDS_JSON_BASE64=${{ secrets.GCP_CREDS_JSON_BASE64 }}
+            MODEL_NAME=/BertModel/${{ steps.tagName.outputs.tag }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
       - name: Deploy to Google Cloud Run
