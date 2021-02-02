@@ -64,7 +64,7 @@ jobs:
         with:
           args: |
             compute ssh --zone us-east1-b compute-1 -- \
-            "rm -rf engineering.labs && git clone https://github.com/mlops-labs-team1/engineering.labs.git && cd engineering.labs/Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/ && sed -i -e s/##IMAGE##/${{ github.sha }}/ MLproject && cat MLproject && conda activate mlflowbert && MLFLOW_TRACKING_URI=${MLFLOW_TRACKING_URI} mlflow run --no-conda . && cd /root && rm -rf engineering.labs"
+            "printenv && rm -rf engineering.labs && git clone https://github.com/mlops-labs-team1/engineering.labs.git && cat /root/.bashrc && cd engineering.labs/Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/ && sed -i -e s/##IMAGE##/${{ github.sha }}/ MLproject && cat MLproject && conda activate mlflowbert && MLFLOW_TRACKING_URI=${MLFLOW_TRACKING_URI} mlflow run --no-conda . && cd /root && rm -rf engineering.labs"
       - name: Stop training node
         uses: actions-hub/gcloud@master
         env:
