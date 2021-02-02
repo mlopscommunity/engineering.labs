@@ -59,23 +59,6 @@ jobs:
             GCP_CREDS_JSON_BASE64=${{ secrets.GCP_CREDS_JSON_BASE64 }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
-      # - name: Docker Build and PUsh
-      #   run: |
-      #     docker buildx build --push -t gcr.io/engineeringlab/trainer:${{ github.sha }} -f ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/Dockerfile-trainer  --build-arg GCP_CREDS_JSON_BASE64=${{ secrets.GCP_CREDS_JSON_BASE64 }} ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier
-      # - name: Docker Push
-      #   run: |
-      #     docker push gcr.io/engineeringlab/trainer:${{ github.sha }}
-      # - name: Build and push
-      #   uses: RafikFarhad/push-to-gcr-github-action@v3.0.2
-      #   with:
-      #     gcloud_service_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-      #     registry: gcr.io
-      #     project_id: engineeringlab
-      #     image_name: trainer
-      #     context: ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier
-      #     dockerfile: ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/Dockerfile-trainer
-      #     image_tag: ${{ github.sha }}
-      #     build_args: GCP_CREDS_JSON_BASE64=${{ secrets.GCP_CREDS_JSON_BASE64 }}
       - name: Start training node
         uses: actions-hub/gcloud@master
         env:
@@ -87,7 +70,7 @@ jobs:
       - name: Sleep for 15 seconds
         uses: jakejarvis/wait-action@master
         with:
-          time: '15'
+          time: '15s'
       - name: Run proper training
         uses: actions-hub/gcloud@master
         env:
