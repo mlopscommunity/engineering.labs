@@ -17,7 +17,7 @@ jobs:
         uses: little-core-labs/get-git-tag@v3.0.1
         id: tagName
         with:
-          tagRegex: "BertModel-(.*)"
+          tagRegex: "BertModel-(\d+).*"
       - name: Setup Python 3.8
         uses: actions/setup-python@v2
         with:
