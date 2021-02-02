@@ -16,10 +16,10 @@ to build end-to-end model lifecycles of Pytorch assets using Mlflow.
 
 ## Team
 
-- Michel Vasconcelos
 - Alexey Naiden
-- Varuna Jayasiri
 - John Savage
+- Michel Vasconcelos
+- Varuna Jayasiri
 
 ## Repo Organization
 
