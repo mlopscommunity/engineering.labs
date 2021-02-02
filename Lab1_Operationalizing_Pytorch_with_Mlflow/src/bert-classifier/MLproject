@@ -1,7 +1,7 @@
 name: bert-classification
 
 docker_env:
-  image: englabs/trainer:##IMAGE##
+  image: englabs/trainer
   volumes: ["$(pwd):/tmp/englab/"]
   environment: ["MLFLOW_TRACKING_URI"]
 
