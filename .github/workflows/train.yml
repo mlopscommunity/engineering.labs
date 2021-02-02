@@ -79,7 +79,7 @@ jobs:
           MLFLOW_TRACKING_URI: http://35.185.111.8:5000
         with:
           args: |
-            compute ssh --zone us-east1-b compute-1 -- 'TMPDIR=$(mktemp -d /tmp/model.XXXXXXXXXX) cd $TMPDIR && git clone https://github.com/mlops-labs-team1/engineering.labs.git && cd engineering.labs/Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/ && git checkout an/gh-actions && sed -i -e s/##IMAGE##/${{ github.sha }}/ MLproject && cat MLproject && MLFLOW_TRACKING_URI='${MLFLOW_TRACKING_URI}' mlflow run --no-conda .'
+            compute ssh --zone us-east1-b compute-1 -- 'TMPDIR=$(mktemp -d /tmp/model.XXXXXXXXXX) cd $TMPDIR && git clone https://github.com/mlops-labs-team1/engineering.labs.git && cd engineering.labs/Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/ && git checkout an/gh-actions && sed -i -e s/##IMAGE##/${{ github.sha }}/ MLproject && cat MLproject && JSON_FILE=${{ github.sha }}.json MLFLOW_TRACKING_URI='${MLFLOW_TRACKING_URI}' mlflow run --no-conda -P json_dump=${TMPDIR}/${JSON_FILE} .'
       - name: Stop training node
         uses: actions-hub/gcloud@master
         if: ${{ always() }}
