@@ -34,15 +34,15 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v2
+        uses: RafikFarhad/push-to-gcr-github-action@v3.0.2
         with:
-          push: true
+          gcloud_service_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+          project_id: engineeringlab
+          image_name: trainer
           context: ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier
-          file: ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/Dockerfile-trainer
-          tags: englabsteam1/trainer:${{ github.sha }}
-          build-args: |
-            GCP_CREDS_JSON_BASE64=${{ secrets.GCP_CREDS_JSON_BASE64 }}
+          dockerfile: ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/Dockerfile-trainer
+          image_tag: ${{ github.sha }}
+          build-args: GCP_CREDS_JSON_BASE64=${{ secrets.GCP_CREDS_JSON_BASE64 }}
       - name: Start training node
         uses: actions-hub/gcloud@master
         env:
@@ -61,11 +61,9 @@ jobs:
           PROJECT_ID: engineeringlab
           APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
           MLFLOW_TRACKING_URI: http://35.185.111.8:5000
-          DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          DOCKER_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
         with:
           args: |
-            compute ssh --zone us-east1-b compute-1 -- 'docker login -u '${DOCKER_USERNAME} ' -p '${DOCKER_TOKEN}' && rm -rf engineering.labs && git clone https://github.com/mlops-labs-team1/engineering.labs.git && cd engineering.labs/Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/ && git checkout an/gh-actions && sed -i -e s/##IMAGE##/${{ github.sha }}/ MLproject && cat MLproject && MLFLOW_TRACKING_URI='${MLFLOW_TRACKING_URI}' mlflow run --no-conda -P model_name=BertModel . && cd /root && rm -rf engineering.labs'
+            compute ssh --zone us-east1-b compute-1 -- 'TMPDIR=$(mktemp -d /tmp/model.XXXXXXXXXX) cd $TMPDIR && git clone https://github.com/mlops-labs-team1/engineering.labs.git && cd engineering.labs/Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/ && git checkout an/gh-actions && sed -i -e s/##IMAGE##/${{ github.sha }}/ MLproject && cat MLproject && MLFLOW_TRACKING_URI='${MLFLOW_TRACKING_URI}' mlflow run --no-conda .'
       - name: Stop training node
         uses: actions-hub/gcloud@master
         if: ${{ always() }}
