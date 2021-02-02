@@ -37,12 +37,13 @@ jobs:
         uses: RafikFarhad/push-to-gcr-github-action@v3.0.2
         with:
           gcloud_service_key: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+          registry: gcr.io
           project_id: engineeringlab
           image_name: trainer
           context: ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier
           dockerfile: ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/Dockerfile-trainer
           image_tag: ${{ github.sha }}
-          build-args: GCP_CREDS_JSON_BASE64=${{ secrets.GCP_CREDS_JSON_BASE64 }}
+          build_args: GCP_CREDS_JSON_BASE64=${{ secrets.GCP_CREDS_JSON_BASE64 }}
       - name: Start training node
         uses: actions-hub/gcloud@master
         env:
