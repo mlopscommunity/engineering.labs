@@ -26,6 +26,8 @@ jobs:
           APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
         with:
           args: info
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
       - name: Configure Docker
         uses: actions-hub/gcloud@master
         env:
@@ -35,7 +37,7 @@ jobs:
           args: auth configure-docker gcr.io --quiet
       - name: Docker Build and PUsh
         run: |
-          docker build --push -t gcr.io/engineeringlab/trainer:${{ github.sha }} -f ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/Dockerfile-trainer  --build-arg GCP_CREDS_JSON_BASE64=${{ secrets.GCP_CREDS_JSON_BASE64 }} ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier
+          docker buildx build --push -t gcr.io/engineeringlab/trainer:${{ github.sha }} -f ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/Dockerfile-trainer  --build-arg GCP_CREDS_JSON_BASE64=${{ secrets.GCP_CREDS_JSON_BASE64 }} ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier
       # - name: Docker Push
       #   run: |
       #     docker push gcr.io/engineeringlab/trainer:${{ github.sha }}
