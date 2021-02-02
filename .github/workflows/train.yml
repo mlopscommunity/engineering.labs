@@ -63,8 +63,7 @@ jobs:
           MLFLOW_TRACKING_URI: http://35.185.111.8:5000
         with:
           args: |
-            compute ssh --zone us-east1-b compute-1 -- \
-            "hostname && printenv && ls -l /usr/local/bin && rm -rf engineering.labs && git clone https://github.com/mlops-labs-team1/engineering.labs.git && cd engineering.labs/Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/ && sed -i -e s/##IMAGE##/${{ github.sha }}/ MLproject && cat MLproject && MLFLOW_TRACKING_URI=${MLFLOW_TRACKING_URI} /usr/local/bin/mlflow run --no-conda . && cd /root && rm -rf engineering.labs"
+            compute ssh --zone us-east1-b compute-1 -- "hostname && printenv && ls -l /usr/local/bin && rm -rf engineering.labs && git clone https://github.com/mlops-labs-team1/engineering.labs.git && cd engineering.labs/Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/ && sed -i -e s/##IMAGE##/${{ github.sha }}/ MLproject && cat MLproject && MLFLOW_TRACKING_URI=${MLFLOW_TRACKING_URI} /usr/local/bin/mlflow run --no-conda . && cd /root && rm -rf engineering.labs"
       - name: Stop training node
         uses: actions-hub/gcloud@master
         if: ${{ always() }}
