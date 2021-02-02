@@ -29,7 +29,6 @@ this repo are self-explanatory (like [_imgs_](imgs/)) and therefore aren'r menti
 * [src](src/): Main source code folder. It comprises all software produced during this lab. _Src_ 
 itself is organized into subfolders according to which components it belongs to;
 * [docs](docs/): Binary documentation, drawings and reports produced during this lab;
-* [infra](infra/): Infrastrucuture creation and definition code.
 
 ## Proposal
 ### Design Overview
@@ -53,10 +52,10 @@ one may track hyperparameters, training steps, test results, extra data and the 
 _MLFlow Tracking Server_ hosted in the **Tracking Node**. All these items, metadata and trained models, 
 are stored in external resources: RDBMS and Cloud Storage Services. Trained models are embedded into 
 dockerized **Serving Instances**, containers running [Torchserve](https://pytorch.org/serve/) providing 
-web access to the models. Serving instances are hosted by **Serving Nodes**.
+web access to the models.
 
 In order to provide feedback loop, a **Monitor Node** checks the status and performance meters, issuing 
-new training cycles or a full rebuild process. Some structures traverses through Development and Production perimeters. Serving, Training and Monitor nodes are key elements that communicate between those zones. 
+new training cycles or a full rebuild process. Some structures traverses through Development and Production perimeters. Training and Monitor nodes are key elements that communicate between those zones. 
 **Control or Operator Machine** is the VM used by Configuration Manager or Operation Engineer to follow up
 the process or issue commands to the nodes in the pipeline. This process may run through many different 
 perimeters, however this solution comprises _Development_ and _Production_ stages only.
@@ -70,14 +69,14 @@ In this section, we record the (most relevant) design decisions, components sele
 | 1 | Computing | ML needs processing power as well as GPU. Our architecure relies on distributed elements, thus needing a reasonable number of physical or virtual machines (some with GPU-power) | All Nodes and Machines | GCP Compute Service | It provides $ 300,00 of (enough) free services and we can also spin some gpu-powered machines |
 | 2 | Durable Data Storage | Every serious solution needs to store durable data | Tracking Server | Google Cloud SQL | A Postgres Database hosted by Google Cloud SQL is reliable and fast enough for our needs  |
 | 3 | Large and Binary Data Storage | ML projects eventually need to store models and extra large files, This type of data doesn't fit in RDBMS | Tracking Server<br>Artifact Store | Google Cloud Storage | Same as #1 |
-| 4 | Shipment and Deployment | There are many deployable assets as well as acessory tools that need specific environment and SO libraries to run. Just installing them into a machine isn't a viable option | Training and Serving Nodes<br>Artifact Storage | Docker | It's the _de facto_ pattern for shipping and deploying things |
+| 4 | Shipment and Deployment | There are many deployable assets as well as acessory tools that need specific environment and SO libraries to run. Just installing them into a machine isn't a viable option | Training  Node<br>Google Cloud Services | Docker | It's the _de facto_ pattern for shipping and deploying things |
 | 5 | Lib Management | Python has a powerful but sometimes confusing and conflicting library ecossystem. Our components may depend on conflicting libs and that will lead to problems in Production | All Nodes and Machines | Conda<br>Pip | Both are heavily used by Python community. They also work quite well with isolation provided by Docker images |
 | 6 | Remote Access | Sometimes we need to issue remote commands or operate a remote machine | All Nodes and Machines | SSH | Hey... It's SSH. There's no need to rationale :-P |
 | 7 | CI/CD & Workflow Management | We need to seamlessly integrate and deploy ML stuff. We also have to coordinate the process between nodes | All Items | Github Actions | We're using GitHub, it's heavily used by community and comes off-the-shelf |
 | 8 | Scheduler | Some activities are triggered by clock | All Nodes and Machines | CRON | We are using Unix like machines |
-| 9 | Project Metadata | We need to describe the ML Component, its structure and how it should run | Source Code Repository<br>Training and Serving Nodes | MLFlow Project Definition | Non-functional Requirement we must adhere |
+| 9 | Project Metadata | We need to describe the ML Component, its structure and how it should run | Source Code Repository<br>Training Node | MLFlow Project Definition | Non-functional Requirement we must adhere |
 | 10 | ML Lifecycle Management | We must track the ML Process | All Nodes and Machines | MLFlow |  Non-functional Requirement we must adhere |
-| 11 | ML Framework | We are building ML Components. Therefore, we must use a ML framework to train our models | Training and Serving Nodes | Pytorch | Non-functional Requirement we must adhere |
+| 11 | ML Framework | We are building ML Components. Therefore, we must use a ML framework to train our models | Training Node<br>Serving Instances | Pytorch | Non-functional Requirement we must adhere |
 
 
 ### Workflow
@@ -94,24 +93,24 @@ Model to provide business value.
 The first stage is Development Workflow. It concerns the continuous integration of new ML code and Dataset 
 changes into a Development Server. Here follows the steps:
 
-1. Commited code or changes in the Dataset fires a training execution. These events trigger Github actions;
+1. Commited code or changes in the Dataset fires a training execution. These events trigger Github 
+Actions (GH Actions);
  
  1. ML pipeline starts. we are considering that previous data activities (Extraction, Validation and
- Preparation) were already executed. In _Training Node_, a Github runner checks out the ML Component 
- and \ or updates the training dataset. The ML Component itself describes its structure (_MLFlow project file_) 
- and how it should be run (_Dockerfile_). The runner starts the training process using MLFlow CLI 
- features: ```mlflow run```. The training happens in a GPU-powered Docker container configured with the 
+ Preparation) were already executed. GH Actions issues a _gcloud commandIn to _Training Node_, so the 
+ ML Component code gets up to date. The ML Component itself describes its structure (_MLFlow project file_) 
+ and how it should be run (_Dockerfile_). The MLFlow CLI starts the training process by issuing: 
+ ```mlflow run```. The training happens in a GPU-powered Docker container configured with the 
  _Tracking Server_ (```MLFLOW_TRACKING_URI```) . At the end of this step, there's a new trained model 
  with its respective metadata;
  
  1. The Training Node sends the trained model, its extra files, and metadata to the Model Registry
- and Tracking Server respectively. In fact, these assets are physically stored in an external Cloud
+ and Tracking Server respectively. In fact, these assets are physically stored in a Cloud
  Storage Service acessible from Internet;
  
- 1. The development workflow ends by deploying the trained model in a _Serving Node_. The runner creates
- and registers a new Docker image capable of running the model. The runner starts a container  
- (```docker run -t model:version```) which downloads and packs the trained model through command 
- ```mlflow create deployment```.
+ 1. The development workflow ends by deploying the trained model in Google Cloud Run Service. 
+ GH Actions creates a new image which contains the trained model (```mlflow create deployment```) which
+ is pushed to Google Container Registry.
 
 The decision to promote a model to Production happens after some experiments. Model version _X_ is selected. This _external event_ triggers the Production Workflow:
 
