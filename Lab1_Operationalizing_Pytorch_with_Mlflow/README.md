@@ -108,12 +108,12 @@ Actions (GH Actions);
  Storage Service acessible from Internet;
  
  1. The development workflow ends by deploying the trained model in Google Cloud Run Service. 
- GH Actions creates a new image which contains the trained model (```mlflow create deployment```) which
- is pushed to Google Container Registry.
+ GH Actions creates a new image which contains the trained model (```mlflow create deployment```) which is tagged with the MLflow model name and version and then
+ is pushed to Google Container Registry. This image is deployed to a development Cloud Run deployment, where various acceptance tests can be performed to ensure the image is ready for production.
 
 The decision to promote a model to Production happens after some experiments. Model version _X_ is selected. This _external event_ triggers the Production Workflow:
 
-5. Operations and Product Management Team decides to deploy a model to Production environment. A release command is issued, triggering GitHub Actions. The runner pulls and configures the corresponding Docker image according to Production environment;
+5. Operations and Product Management Team decides to deploy a model to Production environment. A release command is issued, specifying a model name and version to deploy, triggering GitHub Actions. The runner pulls and configures the corresponding Docker image and deploys this to the Production Cloud Run environment
 
 5. The Monitor node tracks how model is performing and periodically starts a local training pipeline
 with Production data in order to avoid _Model Erosion_;
