@@ -70,13 +70,12 @@ In this section, we record the (most relevant) design decisions, components sele
 | 2 | Durable Data Storage | Every serious solution needs to store durable data | Tracking Server | Google Cloud SQL | A Postgres Database hosted by Google Cloud SQL is reliable and fast enough for our needs  |
 | 3 | Large and Binary Data Storage | ML projects eventually need to store models and extra large files, This type of data doesn't fit in RDBMS | Tracking Server<br>Artifact Store | Google Cloud Storage | Same as #1 |
 | 4 | Shipment and Deployment | There are many deployable assets as well as acessory tools that need specific environment and SO libraries to run. Just installing them into a machine isn't a viable option | Training  Node<br>Google Cloud Services | Docker | It's the _de facto_ pattern for shipping and deploying things |
-| 5 | Lib Management | Python has a powerful but sometimes confusing and conflicting library ecossystem. Our components may depend on conflicting libs and that will lead to problems in Production | All Nodes and Machines | Conda<br>Pip | Both are heavily used by Python community. They also work quite well with isolation provided by Docker images |
+| 5 | Lib Management | Python has a powerful but sometimes confusing and conflicting library ecossystem. Our components may depend on conflicting libs and that will lead to problems in Production | All Nodes and Machines | Pip | Pip is heavily used by Python community. It also work quite well with isolation provided by Docker images |
 | 6 | Remote Access | Sometimes we need to issue remote commands or operate a remote machine | All Nodes and Machines | SSH | Hey... It's SSH. There's no need to rationale :-P |
 | 7 | CI/CD & Workflow Management | We need to seamlessly integrate and deploy ML stuff. We also have to coordinate the process between nodes | All Items | Github Actions | We're using GitHub, it's heavily used by community and comes off-the-shelf |
-| 8 | Scheduler | Some activities are triggered by clock | All Nodes and Machines | CRON | We are using Unix like machines |
-| 9 | Project Metadata | We need to describe the ML Component, its structure and how it should run | Source Code Repository<br>Training Node | MLFlow Project Definition | Non-functional Requirement we must adhere |
-| 10 | ML Lifecycle Management | We must track the ML Process | All Nodes and Machines | MLFlow |  Non-functional Requirement we must adhere |
-| 11 | ML Framework | We are building ML Components. Therefore, we must use a ML framework to train our models | Training Node<br>Serving Instances | Pytorch | Non-functional Requirement we must adhere |
+| 8 | Project Metadata | We need to describe the ML Component, its structure and how it should run | Source Code Repository<br>Training Node | MLFlow Project Definition | Non-functional Requirement we must adhere |
+| 9 | ML Lifecycle Management | We must track the ML Process | All Nodes and Machines | MLFlow |  Non-functional Requirement we must adhere |
+| 10 | ML Framework | We are building ML Components. Therefore, we must use a ML framework to train our models | Training Node<br>Serving Instances | Pytorch | Non-functional Requirement we must adhere |
 
 
 ### Workflow
