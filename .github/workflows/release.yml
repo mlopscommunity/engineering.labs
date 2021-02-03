@@ -19,7 +19,7 @@ jobs:
         with:
           tagRegex: ".*(BertModel-\\d+).*"
       - name: Create Cloud Run label
-        run: echo '::set-output name=label::$(echo ${{ steps.tag_name.outputs.tag }} |  tr '[:upper:]' '[:lower:]')
+        run: echo ::set-output name=label::$(echo ${{ steps.tag_name.outputs.tag }} |  tr '[:upper:]' '[:lower:]')
         id: prepare_label
       - name: Setup Python 3.7
         uses: actions/setup-python@v2

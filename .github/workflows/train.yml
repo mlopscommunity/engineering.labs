@@ -109,7 +109,7 @@ jobs:
           cache-to: type=local,dest=/tmp/.buildx-cache
           push: true
       - name: Create Cloud Run service name
-        run: echo '::set-output name=service_name::$(echo ${{ steps.run_training.outputs.serve_image_tag }} |  tr '[:upper:]' '[:lower:]')
+        run: echo ::set-output name=service_name::$(echo ${{ steps.run_training.outputs.serve_image_tag }} |  tr '[:upper:]' '[:lower:]')
         id: prepare_service_name
       - name: Deploy to Google Cloud Run
         uses: actions-hub/gcloud@master
