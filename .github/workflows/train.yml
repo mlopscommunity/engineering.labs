@@ -76,7 +76,7 @@ jobs:
           APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
         with:
           args: |
-            compute scp --zone us-east1-b ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/train.sh compute-1:~
+            compute scp --zone us-east1-b ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/train.sh compute-1:/root
       - name: Run proper training
         id: run_training
         uses: actions-hub/gcloud@master
@@ -86,7 +86,7 @@ jobs:
           MLFLOW_TRACKING_URI: http://35.185.111.8:5000
         with:
           args: |
-            compute ssh --zone us-east1-b compute-1 -- "~/train.sh ${MLFLOW_TRACKING_URI} 'an/gh-actions' "{{ github.sha }}
+            compute ssh --zone us-east1-b compute-1 -- "/root/train.sh ${MLFLOW_TRACKING_URI} 'an/gh-actions' "{{ github.sha }}
       - name: Stop training node
         uses: actions-hub/gcloud@master
         if: ${{ always() }}
