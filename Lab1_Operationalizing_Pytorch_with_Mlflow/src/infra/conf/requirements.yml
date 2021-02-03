@@ -1,0 +1,15 @@
+---
+roles:
+  # Install a role from Ansible Galaxy.
+  - name: geerlingguy.docker
+    version: 3.0.0
+  - name: geerlingguy.pip
+  - name: andrewrothstein.miniconda
+  - name: andrewrothstein.conda-env
+  - name: monolithprojects.github_actions_runner
+  - name: monolithprojects.user_management
+    version: 1.1.7
+  - 0x0i.systemd
+
+collections:
+  - name: community.docker

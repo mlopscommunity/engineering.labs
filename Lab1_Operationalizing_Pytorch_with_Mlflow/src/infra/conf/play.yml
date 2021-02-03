@@ -1,0 +1,83 @@
+- hosts: all
+  vars:
+    docker_package_state: present
+  pre_tasks:
+    - apt:
+        update_cache: yes
+      become: true
+      when: ansible_os_family == "Debian"
+  roles:
+    - geerlingguy.docker
+    - andrewrothstein.miniconda
+
+
+- hosts: trackers
+  vars:
+    pip_install_packages:
+      - name: psycopg2-binary
+        version: "2.8.5"
+      - name: mlflow[extras]
+        version: "1.9.1"
+      - name: google-cloud-storage
+    user_management:
+      - name: mlflow
+        create_home: yes
+        groups:
+          - sudo
+          - docker
+  roles:
+    - geerlingguy.pip
+    - monolithprojects.user_management  
+    - role: 0x0i.systemd
+      vars:
+        unit_config:
+        - name: "mlflow-server"
+          enabled: "yes"
+          state: "started"
+          Unit:
+            After: network.target
+          Service:
+            Restart: on-failure
+            RestartSec: 30
+            StandardOutput: syslog
+            StandardError: syslog
+            SyslogIdentifier: MLFlow
+            User: 'mlflow'
+            Group: 'mlflow'
+            ExecStart: 'mlflow server --backend-store-uri {{ backend_uri }} --default-artifact-root {{ artifact_uri }} --host 0.0.0.0'
+            ExecReload: '/bin/kill -s HUP $MAINPID'
+          Install:
+            WantedBy: 'multi-user.target'
+
+
+
+- hosts: trainers
+  vars:
+    pip_install_packages:
+      - name: mlflow[extras]
+        version: "1.9.1"
+      - name: google-cloud-storage
+    
+    user_management:
+      - name: mlflow
+        create_home: yes
+        groups:
+          - sudo
+          - docker
+  
+  tasks:
+    - name: Set MLFlow Env Variable
+      ansible.builtin.lineinfile:
+        path: /etc/profile.d/mlflow_vars.sh
+        regexp: '^export MFLOW_TRACKING_URI='
+        state: present
+        create: yes
+        line: 'MLFLOW_TRACKING_URI=http://{{ tracking_server }}:5000'
+    
+  post_tasks:
+    - name: Configure Docker Registry Authentication
+      command: su -c "gcloud auth configure-docker {{ artifact_registry|quote }} --quiet" -l mlflow
+  
+  roles:
+    - geerlingguy.pip
+    - monolithprojects.user_management

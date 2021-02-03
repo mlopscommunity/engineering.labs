@@ -9,8 +9,6 @@ ENV MLFLOW_TRACKING_URI=http://35.185.111.8:5000
 ENV GCP_CREDS_JSON_BASE64_ENV=${GCP_CREDS_JSON_BASE64}
 ENV GOOGLE_APPLICATION_CREDENTIALS=${MLFLOW_HOME}/gcp.json
 
-ENV MODEL_NAME=/BertModel/7
-
 COPY requirements.txt /tmp/
 RUN mkdir -p ${MLFLOW_HOME}/scripts && \
     mkdir -p ${MODEL_STORE} && \
@@ -40,4 +38,16 @@ EXPOSE 8080
 EXPOSE 8081
 EXPOSE 8082
 
+ARG MODEL_NAME
+RUN torchserve --start --model-store ${MODEL_STORE} && \
+    mlflow deployments create \
+        -t torchserve \
+        -m models:${MODEL_NAME} \
+        --name news_classification \
+        -C "MODEL_FILE=news_classifier.py" \
+        -C "HANDLER=news_classifier_handler.py"\
+        -C "EXPORT_PATH=${MODEL_STORE}" && \
+    torchserve --stop
+
 ENTRYPOINT ["./scripts/run.sh"]
+CMD ["serve"]
