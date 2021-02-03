@@ -18,9 +18,9 @@ jobs:
         id: tag_name
         with:
           tagRegex: ".*(BertModel-\\d+).*"
-      - name: Create Cloud Run service name
-        run: echo '::set-output name=service_name::$(echo ${{ steps.tag_name.outputs.tag }} |  tr '[:upper:]' '[:lower:]')
-        id: prepare_service_name
+      - name: Create Cloud Run label
+        run: echo '::set-output name=label::$(echo ${{ steps.tag_name.outputs.tag }} |  tr '[:upper:]' '[:lower:]')
+        id: prepare_label
       - name: Setup Python 3.7
         uses: actions/setup-python@v2
         with:
@@ -32,4 +32,4 @@ jobs:
           APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
         with:
           args: |
-            run deploy news-bert-service --image gcr.io/engineeringlab/torchserve:${{ steps.tag_name.outputs.tag }} --platform managed --port 8080 --allow-unauthenticated --memory 2G --cpu 2 --region southamerica-east1 --update-labels=model=${{ steps.prepare_service_name.outputs.service_name }}
+            run deploy news-bert-service --image gcr.io/engineeringlab/torchserve:${{ steps.tag_name.outputs.tag }} --platform managed --port 8080 --allow-unauthenticated --memory 2G --cpu 2 --region southamerica-east1 --update-labels=model=${{ steps.prepare_label.outputs.label }}
