@@ -20,8 +20,6 @@ export_model_version() {
     MODEL_NAME="${NAME}/$VERSION"
     SERVE_IMAGE_TAG=$(echo "$MODEL_NAME" | tr / -)
 
-    echo Model Name = "$MODEL_NAME"
-    echo Serve Image Tag = "$SERVE_IMAGE_TAG"
     echo '::set-output name=model_name::'"$MODEL_NAME"
     echo '::set-output name=serve_image_tag::'"$SERVE_IMAGE_TAG"
 }

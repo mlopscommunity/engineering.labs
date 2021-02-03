@@ -13,10 +13,10 @@ jobs:
     steps:
       - name: Checkout commit
         uses: actions/checkout@v2
-      - name: Setup Python 3.8
+      - name: Setup Python 3.7
         uses: actions/setup-python@v2
         with:
-          python-version: '3.8'
+          python-version: '3.7'
       - name: Configure GCP access
         uses: actions-hub/gcloud@master
         env:
@@ -86,7 +86,7 @@ jobs:
           MLFLOW_TRACKING_URI: http://35.185.111.8:5000
         with:
           args: |
-            compute ssh --zone us-east1-b compute-1 -- "bash -x /root/train.sh ${MLFLOW_TRACKING_URI} an/gh-actions ${GITHUB_SHA}
+            compute ssh --zone us-east1-b compute-1 -- "bash /root/train.sh ${MLFLOW_TRACKING_URI} an/gh-actions ${GITHUB_SHA}
       - name: Stop training node
         uses: actions-hub/gcloud@master
         if: ${{ always() }}
