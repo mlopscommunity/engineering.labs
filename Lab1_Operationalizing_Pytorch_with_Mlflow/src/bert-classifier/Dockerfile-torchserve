@@ -45,7 +45,7 @@ ARG MODEL_NAME
 RUN torchserve --start --ts-config ${MLFLOW_HOME}/config.properties && \
     mlflow deployments create \
         -t torchserve \
-        -m models:${MODEL_NAME} \
+        -m models:/${MODEL_NAME} \
         --name news_classification \
         -C "MODEL_FILE=news_classifier.py" \
         -C "HANDLER=news_classifier_handler.py"\
