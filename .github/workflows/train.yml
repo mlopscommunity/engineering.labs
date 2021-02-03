@@ -86,7 +86,7 @@ jobs:
           MLFLOW_TRACKING_URI: http://35.185.111.8:5000
         with:
           args: |
-            compute ssh --zone us-east1-b compute-1 -- "/root/train.sh ${MLFLOW_TRACKING_URI} 'an/gh-actions' "{{ github.sha }}
+            compute ssh --zone us-east1-b compute-1 -- "bash -x /root/train.sh ${MLFLOW_TRACKING_URI} 'an/gh-actions' "{{ github.sha }}
       - name: Stop training node
         uses: actions-hub/gcloud@master
         if: ${{ always() }}
