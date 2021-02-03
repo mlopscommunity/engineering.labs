@@ -23,8 +23,8 @@ to build end-to-end model lifecycles of Pytorch assets using Mlflow.
 
 ## Repo Organization
 
-Following list describes the most relevant folders in which this lab is organized. Some folders in 
-this repo are self-explanatory (like [_imgs_](imgs/)) and therefore aren'r mentioned in the list.
+The following list describes the most relevant folders in which this lab is organized. Some folders in 
+this repo are self-explanatory (like [_imgs_](imgs/)) and therefore aren't mentioned in the list.
 
 * [src](src/): Main source code folder. It comprises all software produced during this lab. _Src_ 
 itself is organized into subfolders according to which components it belongs to;
@@ -97,7 +97,7 @@ changes into a Development Server. Here follows the steps:
 Actions (GH Actions);
  
  1. ML pipeline starts. we are considering that previous data activities (Extraction, Validation and
- Preparation) were already executed. GH Actions issues a _gcloud commandIn to _Training Node_, so the 
+ Preparation) were already executed. GH Actions issues a _gcloud_ command to _Training Node_, so the 
  ML Component code gets up to date. The ML Component itself describes its structure (_MLFlow project file_) 
  and how it should be run (_Dockerfile_). The MLFlow CLI starts the training process by issuing: 
  ```mlflow run```. The training happens in a GPU-powered Docker container configured with the 
