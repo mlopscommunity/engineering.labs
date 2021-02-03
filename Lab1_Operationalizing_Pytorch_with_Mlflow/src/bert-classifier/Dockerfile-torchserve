@@ -9,7 +9,7 @@ ENV MLFLOW_TRACKING_URI=http://35.185.111.8:5000
 ENV GCP_CREDS_JSON_BASE64_ENV=${GCP_CREDS_JSON_BASE64}
 ENV GOOGLE_APPLICATION_CREDENTIALS=${MLFLOW_HOME}/gcp.json
 
-COPY requirements-torchserve.txt requirements.txt /tmp/
+COPY requirements.txt /tmp/
 RUN mkdir -p ${MLFLOW_HOME}/scripts && \
     mkdir -p ${MODEL_STORE} && \
     echo "${GCP_CREDS_JSON_BASE64_ENV}"| base64 --decode > "${GOOGLE_APPLICATION_CREDENTIALS}" && \
@@ -19,9 +19,7 @@ RUN mkdir -p ${MLFLOW_HOME}/scripts && \
     rm -rf /var/lib/apt/lists/* && \
     git clone https://github.com/pytorch/serve.git && \
     cd serve && python ./ts_scripts/install_dependencies.py && \
-    pip install --no-cache-dir torch==1.7.1+cpu torchvision==0.8.2+cpu torchaudio==0.7.2 torchserve torch-model-archiver -f https://download.pytorch.org/whl/torch_stable.html && \
-    pip install --no-cache-dir -r /tmp/requirements.txt \
-    pip install --no-cache-dir -r /tmp/requirements-torchserve.txt
+    pip install --no-cache-dir -r /tmp/requirements.txt
 
 COPY entrypoints/torchserve.sh ${MLFLOW_HOME}/scripts/run.sh
 COPY config.properties ${MLFLOW_HOME}/config.properties
