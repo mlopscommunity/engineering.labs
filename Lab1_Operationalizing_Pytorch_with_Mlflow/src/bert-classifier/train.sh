@@ -18,7 +18,7 @@ export_model_version() {
     NAME=$(jq -r '.name' <"$JSON_FILE")
     VERSION=$(jq -r '.version' <"$JSON_FILE")
     MODEL_NAME="${NAME}/$VERSION"
-    SERVE_IMAGE_TAG=$("$MODEL_NAME" | tr / -)
+    SERVE_IMAGE_TAG=$(echo "$MODEL_NAME" | tr / -)
 
     echo Model Name = "$MODEL_NAME"
     echo Serve Image Tag = "$SERVE_IMAGE_TAG"
