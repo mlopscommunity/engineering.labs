@@ -52,7 +52,7 @@ one may track hyperparameters, training steps, test results, extra data and the 
 _MLFlow Tracking Server_ hosted in the **Tracking Node**. All these items, metadata and trained models, 
 are stored in external resources: RDBMS and Cloud Storage Services. Trained models are embedded into 
 dockerized **Serving Instances**, containers running [Torchserve](https://pytorch.org/serve/) providing 
-web access to the models.
+access to the models via HTTP.
 
 In order to provide feedback loop, a **Monitor Node** checks the status and performance meters, issuing 
 new training cycles or a full rebuild process. Some structures traverses through Development and Production perimeters. Training and Monitor nodes are key elements that communicate between those zones. 
