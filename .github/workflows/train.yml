@@ -10,8 +10,6 @@ jobs:
   train:
     name: Train
     runs-on: ubuntu-latest
-    env:
-      GCP_CREDS_JSON_BASE64: ${{ secrets.GCP_CREDS_JSON_BASE64 }}
     steps:
       - name: Checkout commit
         uses: actions/checkout@v2
@@ -48,17 +46,17 @@ jobs:
           registry: gcr.io
           username: _json_key
           password: ${{ secrets.GCR_JSON_KEY }}
-      - name: Build and push
+      - name: Build and push training node
         uses: docker/build-push-action@v2
         with:
           context: ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier
           file: ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/Dockerfile-trainer
-          push: true
           tags: gcr.io/engineeringlab/trainer:${{ github.sha }}
           build-args: |
             GCP_CREDS_JSON_BASE64=${{ secrets.GCP_CREDS_JSON_BASE64 }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
+          push: true
       - name: Start training node
         uses: actions-hub/gcloud@master
         env:
@@ -71,7 +69,16 @@ jobs:
         uses: jakejarvis/wait-action@master
         with:
           time: '15s'
+      - name: Upload training script
+        uses: actions-hub/gcloud@master
+        env:
+          PROJECT_ID: engineeringlab
+          APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+        with:
+          args: |
+            compute scp --zone us-east1-b ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/train.sh compute-1:~
       - name: Run proper training
+        id: run_training
         uses: actions-hub/gcloud@master
         env:
           PROJECT_ID: engineeringlab
@@ -79,7 +86,7 @@ jobs:
           MLFLOW_TRACKING_URI: http://35.185.111.8:5000
         with:
           args: |
-            compute ssh --zone us-east1-b compute-1 -- 'export TMPDIR=$(mktemp -d /tmp/model.XXXXXXXXXX) && cd $TMPDIR && git clone https://github.com/mlops-labs-team1/engineering.labs.git && cd engineering.labs/Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/ && git checkout an/gh-actions && sed -i -e s/##IMAGE##/${{ github.sha }}/ MLproject && export JSON_FILE=${{ github.sha }}.json && export MLFLOW_TRACKING_URI='${MLFLOW_TRACKING_URI}' &&  mlflow run --no-conda -P json_dump=/tmp/englab/$JSON_FILE .'
+            compute ssh --zone us-east1-b compute-1 -- "~/train.sh ${MLFLOW_TRACKING_URI} 'an/gh-actions' "{{ github.sha }}
       - name: Stop training node
         uses: actions-hub/gcloud@master
         if: ${{ always() }}
@@ -89,3 +96,15 @@ jobs:
         with:
           args: |
             compute instances stop --zone us-east1-b compute-1
+      - name: Build and push Torchserve image
+        uses: docker/build-push-action@v2
+        with:
+          context: ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier
+          file: ./Lab1_Operationalizing_Pytorch_with_Mlflow/src/bert-classifier/Dockerfile-torchserve
+          tags: gcr.io/engineeringlab/torchserve:${{ steps.run_training.outputs.serve_image_tag }}
+          build-args: |
+            GCP_CREDS_JSON_BASE64=${{ secrets.GCP_CREDS_JSON_BASE64 }}
+            MODEL_NAME=${{ steps.run_training.outputs.model_name }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+          push: true
