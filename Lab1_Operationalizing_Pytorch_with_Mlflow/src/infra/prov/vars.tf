@@ -1,9 +1,4 @@
 # Configurations for Google Cloud Provider
-variable "gcp_project" {
-  description = "GCP Project Id"
-  default     = "engineeringlab"
-}
-
 variable "gcp_region" {
   description = "GCP Region to use"
   default     = "us-east1"
@@ -13,6 +8,11 @@ variable "gcp_zone" {
   description = "GCP Zone to use"
   default     = "us-east1-a"
 }
+
+variable "mlflow_bucket_name" {
+  default = "mlflow-data-store"
+}
+
 
 variable "ip_cidr_range" {
   description = "IP CIDR range for the subnetwork"
@@ -33,6 +33,13 @@ variable "ansible_ssh" {
   }
 }
 
+variable "mlflow_db_name" {
+  description = "MLFlow DB name"
+  default     = "mlflow_db"
+}
+
+
+# Mandatory variables
 variable "mlflow_db_user" {
   description = "MLFlow user to connect to DB"
 }
@@ -41,8 +48,7 @@ variable "mlflow_db_pass" {
   description = "MLFlow user pass to connect to DB"
 }
 
-variable "mlflow_db_name" {
-  description = "MLFlow DB name"
-  default     = "mlflow_db"
+variable "gcp_project" {
+  description = "GCP Project Id"
 }
 

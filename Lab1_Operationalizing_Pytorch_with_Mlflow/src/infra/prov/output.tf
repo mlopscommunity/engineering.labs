@@ -30,3 +30,8 @@ output "inventory" {
   value = templatefile("inventory.tmpl", { trainer = google_compute_instance.training_node,
   tracker = google_compute_instance.tracking_node })
 }
+
+output "storage_url" {
+  description = "MLFLow Data Storage URL"
+  value       = google_storage_bucket.mlflow_bucket_name.url
+}

@@ -10,11 +10,6 @@ terraform {
       version = "3.0.1"
     }
   }
-
-  backend "gcs" {
-    bucket = "mlflow-exp"
-    prefix = "terraform/state"
-  }
 }
 
 provider "google" {

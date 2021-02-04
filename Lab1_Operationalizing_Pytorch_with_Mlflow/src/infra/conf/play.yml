@@ -55,7 +55,7 @@
   vars:
     pip_install_packages:
       - name: mlflow[extras]
-        version: "1.9.1"
+        version: "1.13.1"
       - name: google-cloud-storage
     
     user_management:
