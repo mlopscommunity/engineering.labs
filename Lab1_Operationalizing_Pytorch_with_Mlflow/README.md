@@ -2,17 +2,28 @@
 
 ## Context
 
+MLOps is one of the new buzzords of Software Development. It goes beyond [DevOps](https://en.wikipedia.org/wiki/DevOps) 
+by adding a brand new perspective over data and models. In fact, Any reasonable Machine Learning
+solution must deal with assets like ML Models, datasets, features, etc. Therefore, a simple ML 
+application may turn into a complex workflow in order to ensure the best model runs in Production.
+Besides that, developing ML models demand a relevant time assessing and comparing parameters, algorithms
+and model performance. MLOps goal is to address these concerns by tying tools and ML frameworks in order to quickly 
+deploy models to Production (and keep them there).
+
 PyTorch is one of the main machine learning libraries used in applications such as computer vision and 
 natural language processing. It is catching up with TensorFlow accelerating the path from research 
 prototyping to production deployment. Recently, Pytorch community announced a number of technical 
 contributions to enable end-to-end support for MLflow usage with PyTorch. 
 
-MLflow is an open source platform to manage the ML lifecycle, including experimentation, reproducibility, deployment, and a central model registry. One may interact with its components by command line interface
+MLflow is an open source platform to manage the ML lifecycle, including experimentation, reproducibility, 
+deployment, and a central model registry. One may interact with its components by command line interface
 or well-known APIs (Python, R, Java and REST), building a workflow capable of handling development and
-production activies.
+production activies. Actually, Its simple design allows small teams (or a lone cowboy data scientist as well) 
+to rapidly set up a working environment and execute a whole Experimentation and Assesment stage before going 
+to formal software development.
 
-In this lab, [MLOps community](https://mlops.community/) wants to test them and provide feasible ways 
-to build end-to-end model lifecycles of Pytorch assets using Mlflow.
+In this lab, [MLOps community](https://mlops.community/) wants to test and provide feasible ways 
+to build an end-to-end model lifecycle with Pytorch assets and Mlflow.
 
 ## Team
 
@@ -80,11 +91,14 @@ In this section, we record the (most relevant) design decisions, components sele
 
 ### Workflow
 
-[DevOps](https://en.wikipedia.org/wiki/DevOps) tools heavily relies on actions triggered by changes
-and other events regarding application's source code. MLOps goes beyond this assumption since any reasonable
-solution must deal with assets like ML Models, datasets, features, etc. Therefore, a simples ML 
-application may turn into a complex workflow in order to ensure the best model runs in Production. The
-following workflow depicts a common development scenario where a production web application uses a ML
+A common ML development workflow should comprise Experimentation, Development and Production stages.
+While Development and Production are common stages in Software Development Industry, Experimentation
+brings trust to the model being developed. That's a core activity for any serious model development. 
+During Experimentation, Data Science Teams may run diverse various scenario, compare key metrics, realize 
+their progress before going to Production pipeline. Although MLFlow provides an easy path to Experimentation, 
+our emphasis is on the release process. Going to Experimentation may be addressed in a future work. 
+
+The following workflow depicts a common development scenario for our pipeline: a production web application uses a ML
 Model to provide business value. 
 
 ![Solution Workflow](imgs/workflow.svg)
