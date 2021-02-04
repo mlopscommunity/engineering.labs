@@ -51,3 +51,9 @@ resource "google_sql_database" "database" {
   name     = var.mlflow_db_name
   instance = google_sql_database_instance.englab_db_instance.name
 }
+
+resource "google_storage_bucket" "mlflow_bucket_name" {
+  name                        = var.mlflow_bucket_name
+  location                    = var.gcp_region
+  uniform_bucket_level_access = true
+}
