@@ -51,7 +51,8 @@ steps:
     - --become: Become root during the process
 
     ```sh
-    $ ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory.ini --private-key=path/to/the/key/ansible-key play.yml -u ansible --become
+    $ ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i inventory.ini \
+        --private-key=path/to/the/key/ansible-key play.yml -u ansible --become
     ```
 
 After that, all your Infrastructure should be configured.
