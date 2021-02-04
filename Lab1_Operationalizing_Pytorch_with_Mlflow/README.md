@@ -2,7 +2,7 @@
 
 ## Context
 
-MLOps is one of the new buzzords of Software Development. It goes beyond [DevOps](https://en.wikipedia.org/wiki/DevOps) 
+MLOps is a new buzzword of Software Development. It goes beyond [DevOps](https://en.wikipedia.org/wiki/DevOps) 
 by adding a brand new perspective over data and models. In fact, Any reasonable Machine Learning
 solution must deal with assets like ML Models, datasets, features, etc. Therefore, a simple ML 
 application may turn into a complex workflow in order to ensure the best model runs in Production.
