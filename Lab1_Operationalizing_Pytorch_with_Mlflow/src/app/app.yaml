@@ -13,4 +13,4 @@ handlers:
   script: auto
 
 env_variables:
-  SERVE_URI: "http://104.198.209.50:8080"
+  SERVE_URI: "https://news-bert-service-52ehdii2ta-rj.a.run.app"
