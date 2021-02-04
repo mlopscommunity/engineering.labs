@@ -68,7 +68,7 @@ class NewsClassifierHandler(object):
         if text is None:
             text = data[0].get("body")
 
-        text = text.decode("utf-8")
+        text = text.decode("utf-8", errors="ignore")
 
         tokenizer = BertTokenizer(self.VOCAB_FILE)  # .from_pretrained("bert-base-cased")
         encoding = tokenizer.encode_plus(

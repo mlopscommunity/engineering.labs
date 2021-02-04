@@ -18,7 +18,11 @@ def predict():
 
     news_text = request.form["news"]
 
-    resp = requests.post(f"{model_serve_url}/predictions/news_classification", data=news_text)
+    try:
+        resp = requests.post(f"{model_serve_url}/predictions/news_classification", data=news_text)
+    except Exception as e:
+        return render_template('index.html', prediction_text=str(e), input=news_text)
+
     if resp.ok:
         output = f"The article is of type {resp.text}"
     else:
