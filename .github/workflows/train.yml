@@ -108,3 +108,14 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
           push: true
+      - name: Create Cloud Run service name
+        run: echo ::set-output name=service_name::$(echo ${{ steps.run_training.outputs.serve_image_tag }} |  tr '[:upper:]' '[:lower:]')
+        id: prepare_service_name
+      - name: Deploy to Google Cloud Run
+        uses: actions-hub/gcloud@master
+        env:
+          PROJECT_ID: engineeringlab
+          APPLICATION_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+        with:
+          args: |
+            run deploy ${{ steps.prepare_service_name.outputs.service_name }} --image gcr.io/engineeringlab/torchserve:${{ steps.run_training.outputs.serve_image_tag }} --platform managed --port 8080 --allow-unauthenticated --memory 2G --cpu 2 --region us-central1 --labels=model=${{ steps.prepare_service_name.outputs.service_name }}
