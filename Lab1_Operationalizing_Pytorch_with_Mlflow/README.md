@@ -6,7 +6,7 @@ MLOps is a new buzzword of Software Development. It goes beyond [DevOps](https:/
 by adding a brand new perspective over data and models. In fact, Any reasonable Machine Learning
 solution must deal with assets like ML Models, datasets, features, etc. Therefore, a simple ML 
 application may turn into a complex workflow in order to ensure the best model runs in Production.
-Besides that, developing ML models demand a relevant time assessing and comparing parameters, algorithms
+Besides that, developing ML models demands a relevant time assessing and comparing parameters, algorithms
 and model performance. MLOps goal is to address these concerns by tying tools and ML frameworks in order to quickly 
 deploy models to Production (and keep them there).
 
@@ -18,7 +18,7 @@ contributions to enable end-to-end support for MLflow usage with PyTorch.
 MLflow is an open source platform to manage the ML lifecycle, including experimentation, reproducibility, 
 deployment, and a central model registry. One may interact with its components by command line interface
 or well-known APIs (Python, R, Java and REST), building a workflow capable of handling development and
-production activies. Actually, Its simple design allows small teams (or a lone cowboy data scientist as well) 
+production activities. Actually, Its simple design allows small teams (or a lone data scientist as well) 
 to rapidly set up a working environment and execute a whole Experimentation and Assesment stage before going 
 to formal software development.
 
@@ -66,10 +66,10 @@ dockerized **Serving Instances**, containers running [Torchserve](https://pytorc
 access to the models via HTTP.
 
 In order to provide feedback loop, a **Monitor Node** checks the status and performance meters, issuing 
-new training cycles or a full rebuild process. Some structures traverses through Development and Production perimeters. Training and Monitor nodes are key elements that communicate between those zones. 
-**Control or Operator Machine** is the VM used by Configuration Manager or Operation Engineer to follow up
-the process or issue commands to the nodes in the pipeline. This process may run through many different 
-perimeters, however this solution comprises _Development_ and _Production_ stages only.
+new training cycles or a full rebuild process. **Control or Operator Machine** is the VM used by Configuration 
+Manager or Operation Engineer to follow up the process or issue commands to the nodes in the pipeline. 
+This process may run through many different perimeters, however this solution comprises _Development_ and _Production_ 
+stages only.
 
 ### Architectural Components and Decisions
 
@@ -93,10 +93,10 @@ In this section, we record the (most relevant) design decisions, components sele
 
 A common ML development workflow should comprise Experimentation, Development and Production stages.
 While Development and Production are common stages in Software Development Industry, Experimentation
-brings trust to the model being developed. That's a core activity for any serious model development. 
-During Experimentation, Data Science Teams may run diverse various scenario, compare key metrics, realize 
-their progress before going to Production pipeline. Although MLFlow provides an easy path to Experimentation, 
-our emphasis is on the release process. Going to Experimentation may be addressed in a future work. 
+brings trust to the model being developed. That's a core activity for any serious Machine Learning development. 
+During Experimentation, Data Science teams may run various scenarios, compare key metrics and realize 
+their progress with model performance before going to Production pipeline. Although MLFlow provides an easy 
+path to that stage, our emphasis is on the release process. Experimentation may be addressed in a future work.
 
 The following workflow depicts a common development scenario for our pipeline: a production web application uses a ML
 Model to provide business value. 
