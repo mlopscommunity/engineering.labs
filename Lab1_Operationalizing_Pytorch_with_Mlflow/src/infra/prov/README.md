@@ -8,6 +8,7 @@ tasks in the very Cloud documentation.
 
 1. [GCP] Enable the following GCloud APIs in Google Cloud Console
 
+    - Compute Engine API (compute.googleapis.com)
     - Cloud Resource Manager API (cloudresourcemanager.googleapis.com)
     - Identity and Access Management API (iam.googleapis.com)
     - IAM Service Account Credentials API (iamcredentials.googleapis.com)
@@ -21,7 +22,7 @@ tasks in the very Cloud documentation.
     ```sh
     gcloud services enable cloudresourcemanager.googleapis.com \
         iam.googleapis.com iamcredentials.googleapis.com sqladmin.googleapis.com \
-        storage.googleapis.com run.googleapis.com
+        storage.googleapis.com run.googleapis.com compute.googleapis.com
     ```
 
 1. [GCP] Create a terraform automation service account and set the following permissions in Console
@@ -35,8 +36,10 @@ tasks in the very Cloud documentation.
     - Storage Admin (roles/storage.admin)
     - Project IAM Admin (roles/resourcemanager.projectIamAdmin)
     
-    You may use GCloud to do that as well issuing the command for each role `gcloud iam service-accounts create`
-    or using some inline script.
+    You may use GCloud to do that as well issuing the command for each role 
+    `gcloud iam service-accounts create` or using some inline script. Just create a file
+    with all roles you want name it as `roles.txt`and execute the script bellow.
+
     ```sh
     $ while read r; do
         gcloud projects add-iam-policy-binding <project_id> \
@@ -104,21 +107,17 @@ of them in a `locl.hcl`file.
     ```
 
 1. [Control Machine] Extract important information from tfstate
-    - Ansible Inventory: 
+    
     ```sh
+    # Ansible Inventory: 
     $ terraform output -raw inventory > ../conf/inventory.ini
-    ```
-    - MLFlow Server URL Connection:
-    ```sh
+    
+    # MLFlow Server URL Connection
     $ terraform output sql_url_conn
-    ```
-    - Tracking Node IP:
-    ```sh
+    
     $ terraform output tracking_node
-    ```
-    - Training Node IP:
-    ```sh
     $ terraform output training_node
+    $ terraform output storage_url
     ```
 
 ## Destroying
@@ -129,7 +128,16 @@ its user for instance). If you don't want to destroy a resource you may apply a 
 remove the resource from terraform control. You can find information about that in 
 [Terraform tutorials](https://learn.hashicorp.com/terraform).
 
-This procedure destroys all created resources:
+This procedure destroys the managed resources:
+
+1. [Optional] Remove DB and Buckets from Terraform management, so you can keep them for your analysis
+
+    ```
+    $ terraform state rm google_sql_user.users
+    $ terraform state rm google_sql_database.database
+    $ terraform state rm google_sql_database_instance.englab_db_instance
+    $ terraform state rm google_storage_bucket.mlflow_bucket_name
+    ```
 
 1. Remove delete protection from Database Instance. This resource has a protection to avoid unintentional
 database detruction. Just uncomment this line in [data.tf](data.tf) and apply the changes.
