@@ -7,7 +7,7 @@ It is catching up with TensorFlow accelerating the path from research prototypin
 Recently, Pytorch community announched a number of technical contributions to enable end-to-end support for MLflow usage with PyTorch, 
 including support for: 
 
-- autologging via PyTorch Lightning
+- Autologging via PyTorch Lightning
 - TorchServe integration through a new deployment plug-in
 
 and a sample end-to-end workflow targeting HuggingFace Transformers.
@@ -22,6 +22,12 @@ Teams involved in this scenario are:
 - Team 2 : Itirell, Mark Peters, Carlos Leyson, Semendiak
 - Team 3 : Laszlo Sragner, yartem, Dimi, Paulo Maia
 - Team 4 : Shadab Hussain, susana brandao, Godwin Ekainu, Josh
+
+## Final Deliverables
+
+Here you can find the two final projects Team1 and Team3 provided:
+- Team 1: [News Classification](https://github.com/mlops-labs-team1/engineering.labs)
+- Team 3: [Yelp Review](https://github.com/dmangonakis/mlops-community-lab1-team3-yelp)
 
 
 ## Contributing
