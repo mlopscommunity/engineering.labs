@@ -1,5 +1,9 @@
 # Lab #1 : Operationalizing Pytorch Model with Mlflow
 
+<p align="center">
+<img src="https://github.com/mlopscommunity/engineering.labs/raw/master/Lab1_Operationalizing_Pytorch_with_Mlflow/pytorch_mlflow.png">
+</p>
+
 ## Scenario
 
 PyTorch is one of the main machine learning library used for applications such as computer vision and natural language processing. 
@@ -25,8 +29,10 @@ Teams involved in this scenario are:
 
 ## Final Deliverables
 
-Here you can find the two final projects Team1 and Team3 provided:
+Here you can find the two final projects Team1 and Team3 delivered: 
+
 - Team 1: [News Classification](https://github.com/mlops-labs-team1/engineering.labs)
+
 - Team 3: [Yelp Review](https://github.com/dmangonakis/mlops-community-lab1-team3-yelp)
 
 
