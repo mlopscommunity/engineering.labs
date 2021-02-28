@@ -14,7 +14,7 @@ With this 1st Engineering Lab, Mlops community wants to test them and provide a 
 
 ## Content
 
-Not strict constraints we imposed overall. 
+Not strict constraints are imposed overall. 
 
 But Teams have to use PyTorch for model bulding and MLflow platform for serving.
 
