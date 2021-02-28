@@ -1,22 +1,28 @@
 # Lab #1 : Operationalizing Pytorch Model with Mlflow
 
-<p align="center">
-<img src="https://github.com/mlopscommunity/engineering.labs/raw/master/Lab1_Operationalizing_Pytorch_with_Mlflow/pytorch_mlflow.png">
-</p>
-
 ## Scenario
 
-PyTorch is one of the main machine learning library used for applications such as computer vision and natural language processing. 
-It is catching up with TensorFlow accelerating the path from research prototyping to production deployment.
-Recently, Pytorch community announched a number of technical contributions to enable end-to-end support for MLflow usage with PyTorch, 
-including support for: 
+PyTorch is one of the main machine learning library used for applications such as computer vision and natural language processing. It is catching up with TensorFlow accelerating the path from research prototyping to production deployment.
+Recently, Pytorch community announched a number of technical contributions to enable end-to-end support for MLflow usage with PyTorch, including support for: 
 
 - Autologging via PyTorch Lightning
 - TorchServe integration through a new deployment plug-in
 
 and a sample end-to-end workflow targeting HuggingFace Transformers.
 
-With this 1st labs, Mlops commuunity wants to test them and provide a possible end-to-end model lifecycle of Pytorch model using Mlflow.
+With this 1st Engineering Lab, Mlops community wants to test them and provide a possible end-to-end model lifecycle of Pytorch model using Mlflow. 
+
+## Content
+
+Not strict constraints we imposed overall. 
+
+But Teams have to use PyTorch for model bulding and MLflow platform for serving.
+
+As reference, have a look at the full MLOps workflow for PyTorch models using MLflow in [the original article](https://medium.com/pytorch/mlflow-and-pytorch-where-cutting-edge-ai-meets-mlops-1985cf8aa789).
+
+<p align="center">
+<img src="https://github.com/mlopscommunity/engineering.labs/raw/master/Lab1_Operationalizing_Pytorch_with_Mlflow/pytorch_mlflow.png">
+</p>
 
 ## Teams
 
