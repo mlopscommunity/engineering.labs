@@ -30,7 +30,7 @@ Teams involved in this scenario are:
 
 - Team 1 : Michel Vasconcelos, Alexey Naiden, Varuna Jayasiri, John Savage
 - Team 2 : Itirell, Mark Peters, Carlos Leyson, Semendiak
-- Team 3 : Laszlo Sragner, yartem, Dimi, Paulo Maia
+- Team 3 : Laszlo Sragner, Artem Yushkovsky, Dimi, Paulo Maia
 - Team 4 : Shadab Hussain, susana brandao, Godwin Ekainu, Josh
 
 ## Final Deliverables
