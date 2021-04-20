@@ -1,4 +1,4 @@
-# Lab #1 : Operationalizing Pytorch Model with Mlflow
+# Lab #2 : Feature store for ML
 
 ## Scenario
 
